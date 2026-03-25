@@ -97,8 +97,8 @@
 
 1. **Клонирование репозитория**
    ```bash
-   git clone https://github.com/vladislavboev2007/Matrix-app.git
-   cd Matrix-app
+   git clone https://github.com/vladislavboev2007/Matrix_app.git
+   cd Matrix_app
    ```
 
 2. **Создание виртуального окружения**
