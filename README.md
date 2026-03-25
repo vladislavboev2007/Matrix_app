@@ -117,11 +117,12 @@
    ```
 
 4. **Настройка базы данных PostgreSQL**
+   
+   4.1. Создаем базу данных в PostgreSQL
    ```sql
    CREATE DATABASE matrix_tests_db;
-   CREATE USER matrix_user WITH PASSWORD 'your_password';
-   GRANT ALL PRIVILEGES ON DATABASE matrix_tests_db TO matrix_user;
    ```
+   4.2. Затем загружаем туда из `database/matrix_tests_db.sql` через формат Plain в окне Restore
    
 5. **Настройка подключения к БД**
  
