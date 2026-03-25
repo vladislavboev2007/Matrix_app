@@ -237,6 +237,29 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--g100);color:var(--b
 .btn-word:disabled{opacity:.5;cursor:not-allowed;}
 
 /* TOAST / SPINNER */
+/* REVIEW MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--white);border:2px solid var(--black);border-radius:var(--rlg);width:100%;max-width:700px;max-height:90vh;display:flex;flex-direction:column;box-shadow:8px 8px 0 var(--black);}
+.modal-header{padding:20px 24px;border-bottom:2px solid var(--g200);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.modal-title{font-size:18px;font-weight:700;}
+.modal-close{background:var(--black);color:var(--white);border:none;border-radius:var(--r);width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.modal-meta{padding:14px 24px;background:var(--g100);border-bottom:2px solid var(--g200);font-size:13px;color:var(--g600);flex-shrink:0;}
+.modal-body{padding:20px 24px;overflow-y:auto;flex:1;}
+.review-item{border:2px solid var(--g200);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;}
+.review-item.correct{border-color:#86efac;background:#f0fdf4;}
+.review-item.wrong{border-color:#fca5a5;background:#fef2f2;}
+.review-num{font-size:11px;font-weight:700;color:var(--g400);margin-bottom:4px;}
+.review-q{font-size:14px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+.review-answers{display:flex;flex-wrap:wrap;gap:8px;font-size:13px;}
+.review-ans-user{padding:4px 10px;border-radius:8px;font-family:'JetBrains Mono',monospace;}
+.review-ans-user.ok{background:#dcfce7;color:#166534;}
+.review-ans-user.err{background:#fee2e2;color:#991b1b;text-decoration:line-through;}
+.review-ans-correct{padding:4px 10px;border-radius:8px;background:#dcfce7;color:#166534;font-family:'JetBrains Mono',monospace;font-weight:700;}
+.review-explain{font-size:12px;color:#92400e;margin-top:6px;padding:6px 10px;background:#fef3c7;border-radius:6px;}
+.btn-review{background:var(--white);color:var(--black);border:2px solid var(--black);border-radius:var(--r);padding:6px 12px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-right:6px;}
+.btn-review:hover{background:var(--g100);}
+
 .toast{position:fixed;bottom:24px;right:24px;background:var(--black);color:var(--white);padding:13px 18px;border-radius:var(--r);font-size:13px;font-weight:600;z-index:999;transform:translateY(80px);opacity:0;transition:transform .3s,opacity .3s;}
 .toast.show{transform:translateY(0);opacity:1;}
 .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px;}
@@ -741,6 +764,18 @@ A₁₂ = (−1)^(1+2) · M₁₂ = (−1)³ · (−6) = +6</div>
 
 <div class="toast" id="toast"></div>
 
+<!-- REVIEW MODAL -->
+<div class="modal-overlay" id="review-modal" onclick="closeReview(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="review-title">Разбор теста</div>
+      <button class="modal-close" onclick="closeReview()">✕</button>
+    </div>
+    <div class="modal-meta" id="review-meta"></div>
+    <div class="modal-body" id="review-body"></div>
+  </div>
+</div>
+
 <script>
 /* ═══════════════════════════════════════════
    API
@@ -775,6 +810,7 @@ function switchPage(name){
   const pb=document.getElementById('pb-'+name);if(pb)pb.classList.add('active');
   if(name==='history')loadHistory();
   if(name==='daily')buildDailyPage();
+  if(name==='theory')setTimeout(initTheoryScroll,100);
 }
 
 /* ═══════════════════════════════════════════
@@ -784,12 +820,29 @@ function scrollToSection(id, linkEl){
   const el=document.getElementById(id);
   if(!el)return;
   const body=document.getElementById('theory-body');
-  // offsetTop relative to theory-body
   const bodyRect=body.getBoundingClientRect();
   const elRect=el.getBoundingClientRect();
   body.scrollBy({top:elRect.top - bodyRect.top - 20, behavior:'smooth'});
   document.querySelectorAll('.toc-link').forEach(l=>l.classList.remove('active'));
   if(linkEl)linkEl.classList.add('active');
+}
+
+function initTheoryScroll(){
+  const body=document.getElementById('theory-body');
+  if(!body)return;
+  const sections=body.querySelectorAll('.theory-section');
+  const links=document.querySelectorAll('.toc-link');
+  body.addEventListener('scroll',()=>{
+    let current='';
+    sections.forEach(s=>{
+      if(s.offsetTop - body.scrollTop <= 40) current=s.id;
+    });
+    links.forEach(l=>{
+      l.classList.remove('active');
+      if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes("'"+current+"'"))
+        l.classList.add('active');
+    });
+  });
 }
 
 /* ═══════════════════════════════════════════
@@ -903,9 +956,12 @@ function renderQText(q){
    TESTS DATA
 ═══════════════════════════════════════════ */
 const TESTS=[
-  {id:1,title:'Тест 1 — Лёгкий',  desc:'Сложение, умножение на скаляр, размер, транспонирование', difficulty:'easy',  diffLabel:'Лёгкий',  questions:5,time:15,topics:['add','scalar','transpose_check','equal','size']},
-  {id:2,title:'Тест 2 — Средний', desc:'Умножение матриц, определители 2×2, транспонирование',   difficulty:'medium',diffLabel:'Средний', questions:6,time:10,topics:['multiply','det2','transpose','multiply_scalar','add','det2']},
-  {id:3,title:'Тест 3 — Сложный', desc:'Определители 2×2 и 3×3, умножение матриц',               difficulty:'hard',  diffLabel:'Сложный', questions:4,time:7, topics:['det2','det3','det2','det3']}
+  {id:1, title:'Тест 1 — Базовый',      desc:'Сложение матриц и умножение на скаляр',                          difficulty:'easy',   diffLabel:'Лёгкий',  questions:5, time:15, topics:['add','scalar','equal','add','scalar']},
+  {id:2, title:'Тест 2 — Размер и транспонирование', desc:'Определение размера матрицы и транспонирование',   difficulty:'easy',   diffLabel:'Лёгкий',  questions:5, time:12, topics:['size','transpose_check','size','transpose','transpose_check']},
+  {id:3, title:'Тест 3 — Определители', desc:'Вычисление определителей 2×2',                                  difficulty:'medium', diffLabel:'Средний', questions:5, time:10, topics:['det2','det2','det2','multiply_scalar','det2']},
+  {id:4, title:'Тест 4 — Умножение',    desc:'Умножение матриц и скаляра',                                     difficulty:'medium', diffLabel:'Средний', questions:6, time:10, topics:['multiply','multiply','det2','multiply_scalar','add','multiply']},
+  {id:5, title:'Тест 5 — Продвинутый',  desc:'Определители 3×3, обратная матрица, ранг',                       difficulty:'hard',   diffLabel:'Сложный', questions:5, time:12, topics:['det3','inverse','det3','rank','det2']},
+  {id:6, title:'Тест 6 — Комплексный',  desc:'Все операции: транспонирование, умножение, определители, ранг',  difficulty:'hard',   diffLabel:'Сложный', questions:7, time:15, topics:['det3','multiply','inverse','rank','transpose','det2','det3']},
 ];
 const TYPED_OPS=[
   {key:'add',      icon:'➕', title:'Сложение матриц',              desc:'A + B',                 minGrade:9},
@@ -924,9 +980,9 @@ const ALL_TOPICS=['add','multiply','transpose','scalar','size','det2','det3','in
 
 // Topics available per grade
 const GRADE_TOPICS = {
-  9:  ['add','scalar','transpose','size','det2','multiply','matpow'],
-  10: ['add','scalar','transpose','size','det2','det3','multiply','matpow','inverse','rank','sle'],
-  11: ['add','scalar','transpose','size','det2','det3','multiply','matpow','inverse','rank','sle','minor'],
+  9:  ['add','scalar','transpose','size','det','det2','multiply','matpow'],
+  10: ['add','scalar','transpose','size','det','det2','det3','multiply','matpow','inverse','rank','sle'],
+  11: ['add','scalar','transpose','size','det','det2','det3','multiply','matpow','inverse','rank','sle','minor'],
 };
 // Topics locked per grade (for typed panel — show but locked)
 const LOCKED_TOPICS = {
@@ -950,51 +1006,156 @@ const mT=A=>A[0].map((_,j)=>A.map((_,i)=>A[i][j]));
 const mMul=(A,B)=>{const R=A.length,C=B[0].length,K=B.length;return Array.from({length:R},(_,i)=>Array.from({length:C},(_,j)=>Array.from({length:K},(_,k)=>A[i][k]*B[k][j]).reduce((a,b)=>a+b,0)));};
 const d2=m=>m[0][0]*m[1][1]-m[0][1]*m[1][0];
 const d3=m=>m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])-m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])+m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);
-const fmt=n=>{const r=Math.round(n*100)/100;return r===Math.floor(r)?String(r):r.toFixed(2);};
-const mSF=m=>'['+m.map(r=>'['+r.map(fmt).join(', ')+']').join(', ')+']';
+const fmt=n=>{
+  if(Number.isInteger(n)) return String(n);
+  // Check if it's a clean fraction with small denominator
+  for(const d of [2,3,4,5,6,7,8,9,10]){
+    const num=Math.round(n*d);
+    if(Math.abs(num/d - n) < 0.0001){
+      if(d===1) return String(num);
+      return num+'/'+d; // show as fraction e.g. 11/3
+    }
+  }
+  // Otherwise round to 2 decimal places
+  return (Math.round(n*100)/100).toFixed(2);
+};
+const mSF=m=>'['+m.map(r=>'['+r.map(v=>{
+  if(Number.isInteger(v)) return String(v);
+  const r2=Math.round(v*100)/100;
+  return r2.toFixed(2);
+}).join(', ')+']').join(', ')+']';
 function inv2(m){const d=d2(m);if(d===0)return null;return[[m[1][1]/d,-m[0][1]/d],[-m[1][0]/d,m[0][0]/d]];}
 function mRank(m){const rows=m.length,cols=m[0].length,a=m.map(r=>[...r]);let rank=0;for(let col=0;col<cols&&rank<rows;col++){let piv=-1;for(let row=rank;row<rows;row++)if(a[row][col]!==0){piv=row;break;}if(piv===-1)continue;[a[rank],a[piv]]=[a[piv],a[rank]];for(let row=0;row<rows;row++)if(row!==rank&&a[row][col]!==0){const f=a[row][col]/a[rank][col];for(let c=0;c<cols;c++)a[row][c]-=f*a[rank][c];}rank++;}return rank;}
 function sle2(A,b){const det=d2(A);if(det===0)return null;return[d2([[b[0],A[0][1]],[b[1],A[1][1]]])/det,d2([[A[0][0],b[0]],[A[1][0],b[1]]])/det];}
 function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=rI(0,i);[b[i],b[j]]=[b[j],b[i]];}return b;}
-function makeOpts(correct,gen,n=3){const o=[correct];let t=0;while(o.length<n+1&&t<200){const w=gen();if(JSON.stringify(w)!==JSON.stringify(correct))o.push(w);t++;}return shuf(o);}
+function makeOpts(correct,gen,n=3){
+  const opts=[correct];
+  // Use string representation for dedup to catch "2" == "2" etc
+  const seen=new Set([String(correct)]);
+  let tries=0;
+  while(opts.length<n+1&&tries<500){
+    const w=gen();
+    const key=String(w);
+    if(!seen.has(key)){seen.add(key);opts.push(w);}
+    tries++;
+  }
+  return shuf(opts);
+}
 
 /* ═══════════════════════════════════════════
    GENERATORS
 ═══════════════════════════════════════════ */
 const G={
-  add(){const A=rM(2,2,-4,6),B=rM(2,2,-4,6),c=mAdd(A,B);return{text:`Найдите сумму матриц:\nA = ${mS(A)}, B = ${mS(B)}`,options:makeOpts(mS(c),()=>mS(rM(2,2,-8,12))),correct:mS(c)};},
-  scalar(){const A=rM(2,2,-4,6),k=rI(2,5),c=mScale(A,k);return{text:`Умножьте на скаляр k = ${k}:\nA = ${mS(A)}`,options:makeOpts(mS(c),()=>mS(rM(2,2,-20,30))),correct:mS(c)};},
+  add(){
+    const A=rM(2,2,-4,6),B=rM(2,2,-4,6),c=mAdd(A,B);
+    const wgen=()=>{
+      const w=c.map(r=>[...r]);
+      const i=rI(0,1),j=rI(0,1);
+      w[i][j]+=rI(1,5)*(Math.random()<0.5?1:-1);
+      return mS(w);
+    };
+    return{text:`Найдите сумму матриц:\nA = ${mS(A)}, B = ${mS(B)}`,options:makeOpts(mS(c),wgen),correct:mS(c)};
+  },
+  scalar(){
+    const A=rM(2,2,-4,6),k=rI(2,5),c=mScale(A,k);
+    const wgen=()=>{
+      // Wrong scalar: use k+1 or k-1
+      const k2=k+(Math.random()<0.5?1:-1);
+      return mS(mScale(A,k2));
+    };
+    return{text:`Умножьте на скаляр k = ${k}:\nA = ${mS(A)}`,options:makeOpts(mS(c),wgen),correct:mS(c)};
+  },
   transpose(){const A=rM(2,3,-4,6),c=mT(A);return{text:`Найдите Aᵀ:\nA = ${mS(A)}`,options:makeOpts(mS(c),()=>mS(rM(3,2,-4,6))),correct:mS(c)};},
   transpose_check(){const A=rM(2,2,-4,6),c=mT(A);return{text:`Вычислите Aᵀ:\nA = ${mS(A)}`,options:makeOpts(mS(c),()=>mS(rM(2,2,-4,6))),correct:mS(c)};},
   equal(){const A=rM(2,2,-3,5),B=rM(2,2,-3,5),c=mAdd(A,B);return{text:`Вычислите A + B:\nA = ${mS(A)}, B = ${mS(B)}`,options:makeOpts(mS(c),()=>mS(rM(2,2,-6,10))),correct:mS(c)};},
-  size(){const r=rI(2,4),c=rI(2,4),A=rM(r,c,-4,6),cor=`${r}×${c}`;const all=['2×2','2×3','3×2','3×3','2×4','4×2','3×4','4×3'].filter(s=>s!==cor);return{text:`Определите размер матрицы:\nA = ${mS(A)}`,options:shuf([cor,...shuf(all).slice(0,3)]),correct:cor};},
-  multiply(){const A=rM(2,2,-3,4),B=rM(2,2,-3,4),c=mMul(A,B);return{text:`Найдите A·B:\nA = ${mS(A)}, B = ${mS(B)}`,options:makeOpts(mS(c),()=>mS(rM(2,2,-12,16))),correct:mS(c)};},
+  size(){
+    const r=rI(2,4),c=rI(2,4),A=rM(r,c,-4,6),cor=`${r}×${c}`;
+    // Generate wrong sizes that are visually plausible: swap r/c, add 1, subtract 1
+    const wrongs=new Set();
+    const cands=[`${c}×${r}`,`${r+1}×${c}`,`${r}×${c+1}`,`${r-1>0?r-1:r+2}×${c}`,`${r}×${c-1>0?c-1:c+2}`,'2×2','2×3','3×2','3×3','3×4','4×3'];
+    for(const s of cands){if(s!==cor&&!wrongs.has(s))wrongs.add(s);if(wrongs.size>=3)break;}
+    return{text:`Определите размер матрицы (строки × столбцы):\nA = ${mS(A)}`,options:shuf([cor,...[...wrongs].slice(0,3)]),correct:cor};
+  },
+  multiply(){
+    const A=rM(2,2,-3,4),B=rM(2,2,-3,4),c=mMul(A,B);
+    // Wrong: perturb elements slightly so they look close but are different
+    const wgen=()=>{
+      const off=rI(1,4);
+      const i=rI(0,1),j=rI(0,1);
+      const w=c.map(r=>[...r]);
+      w[i][j]+=off*(Math.random()<0.5?1:-1);
+      const s=mS(w);
+      return s===mS(c)?mS(rM(2,2,-12,16)):s;
+    };
+    return{text:`Найдите A·B:\nA = ${mS(A)}, B = ${mS(B)}`,options:makeOpts(mS(c),wgen),correct:mS(c)};
+  },
   multiply_scalar(){const A=rM(2,2,-3,5),k=rI(-3,5),c=mScale(A,k);return{text:`Вычислите ${k}·A:\nA = ${mS(A)}`,options:makeOpts(mS(c),()=>mS(rM(2,2,-15,25))),correct:mS(c)};},
-  det2(){const m=rM(2,2,-5,7),c=d2(m),w=new Set();while(w.size<3){const v=rI(-50,50);if(v!==c)w.add(v);}return{text:`Определитель 2×2:\n${mS(m)}`,options:shuf([c,...w]).map(String),correct:String(c)};},
-  det3(){const m=rM(3,3,-4,5),c=d3(m),w=new Set();while(w.size<3){const v=rI(-200,200);if(v!==c)w.add(v);}return{text:`Определитель 3×3:\n${mS(m)}`,options:shuf([c,...w]).map(String),correct:String(c)};},
+  det2(){
+    const m=rM(2,2,-5,7),c=d2(m);
+    const w=new Set();
+    // Add plausible wrong answers: common mistakes (wrong sign, off-by-one, swapped)
+    const mistakes=[
+      -c,                          // wrong sign
+      m[0][0]*m[1][1]+m[0][1]*m[1][0], // + instead of -
+      m[0][0]*m[1][0]-m[0][1]*m[1][1], // wrong diagonal
+      c+rI(1,5), c-rI(1,5),       // off by small amount
+    ];
+    for(const v of mistakes){if(v!==c&&!w.has(v))w.add(v);if(w.size>=3)break;}
+    while(w.size<3){const v=rI(-60,60);if(v!==c)w.add(v);}
+    return{text:`Определитель 2×2:\n${mS(m)}`,options:shuf([c,...[...w].slice(0,3)]).map(String),correct:String(c)};
+  },
+  det3(){
+    const m=rM(3,3,-4,5),c=d3(m);
+    const w=new Set();
+    const mistakes=[-c, c+rI(5,20), c-rI(5,20), Math.round(c*1.5)];
+    for(const v of mistakes){if(v!==c&&!w.has(v))w.add(v);if(w.size>=3)break;}
+    while(w.size<3){const v=rI(-250,250);if(v!==c&&!w.has(v))w.add(v);}
+    return{text:`Определитель 3×3:\n${mS(m)}`,options:shuf([c,...[...w].slice(0,3)]).map(String),correct:String(c)};
+  },
   det(){return Math.random()<0.5?G.det2():G.det3();},
   inverse(){let m,inv;do{m=rM(2,2,-4,4);inv=inv2(m);}while(!inv);const cor=mSF(inv);const ws=[];while(ws.length<3){let wm;do{wm=rM(2,2,-4,4);}while(d2(wm)===0);const wi=mSF(inv2(wm));if(wi!==cor&&!ws.includes(wi))ws.push(wi);}return{text:`Найдите A⁻¹:\nA = ${mS(m)}`,options:shuf([cor,...ws]),correct:cor};},
-  rank(){const rows=rI(2,3),cols=rI(2,3),m=rM(rows,cols,-3,4),c=mRank(m),maxR=Math.min(rows,cols);const allR=[0,1,2,3].filter(v=>v<=maxR&&v!==c);const ws=shuf(allR).slice(0,3);while(ws.length<3)ws.push((c+ws.length+1)%(maxR+1));return{text:`Ранг матрицы:\n${mS(m)}`,options:shuf([String(c),...ws.map(String)]),correct:String(c)};},
+  rank(){
+    // Use 3x4 matrix for more interesting rank values
+    const rows=rI(2,3),cols=rI(3,4),m=rM(rows,cols,-3,4),c=mRank(m);
+    // Always offer 4 distinct options from the set {0,1,2,3}
+    const pool=[0,1,2,3].filter(v=>v!==c);
+    const ws=shuf(pool).slice(0,3);
+    return{text:`Определите ранг матрицы:\n${mS(m)}`,options:shuf([String(c),...ws.map(String)]),correct:String(c)};
+  },
   sle(){
     let A,b,sol;
     do{A=rM(2,2,-3,3);b=[rI(-5,5),rI(-5,5)];sol=sle2(A,b);}
     while(!sol||Math.abs(sol[0])>10||Math.abs(sol[1])>10);
-    const cor=`x₁=${fmt(sol[0])}, x₂=${fmt(sol[1])}`;
+    let cor=`x₁=${Math.round(sol[0])}, x₂=${Math.round(sol[1])}`;
+    const x1=Math.round(sol[0]), x2=Math.round(sol[1]);
+    const cor2=`x₁=${x1}, x₂=${x2}`;
     const ws=[];
-    while(ws.length<3){const s=`x₁=${rI(-8,8)}, x₂=${rI(-8,8)}`;if(s!==cor&&!ws.includes(s))ws.push(s);}
+    const used=new Set([cor2]);
+    const cands=[
+      `x₁=${x2}, x₂=${x1}`,       // swapped
+      `x₁=${-x1}, x₂=${-x2}`,     // negated
+      `x₁=${x1+1}, x₂=${x2+1}`,   // off by 1
+      `x₁=${x1-1}, x₂=${x2-1}`,
+      `x₁=${x1+2}, x₂=${x2-1}`,
+    ];
+    for(const s of cands){if(!used.has(s)&&ws.length<3){used.add(s);ws.push(s);}}
+    while(ws.length<3){const s=`x₁=${rI(-8,8)}, x₂=${rI(-8,8)}`;if(!used.has(s)){used.add(s);ws.push(s);}}
     const method=Math.random()<0.5?'Методом Крамера':'Методом Гаусса';
-    return{text:`${method} решите систему:\n${A[0][0]}x₁ + ${A[0][1]}x₂ = ${b[0]}\n${A[1][0]}x₁ + ${A[1][1]}x₂ = ${b[1]}`,options:shuf([cor,...ws]),correct:cor};
+    return{text:`${method} решите систему:\n${A[0][0]}x₁ + ${A[0][1]}x₂ = ${b[0]}\n${A[1][0]}x₁ + ${A[1][1]}x₂ = ${b[1]}`,options:shuf([cor2,...ws]),correct:cor2};
   },
   scalar_t(){return Math.random()<0.5?G.scalar():G.multiply_scalar();},
   matpow(){
-    // A^n where n=2 or 3, 2x2 matrix with small values
     const A=rM(2,2,-2,3);
     const n=rI(2,3);
-    // compute A^n
-    let R=[[1,0],[0,1]]; // identity
+    let R=[[1,0],[0,1]];
     for(let i=0;i<n;i++) R=mMul(R,A);
     const cor=mS(R);
-    const opts=makeOpts(cor,()=>mS(rM(2,2,-12,15)));
+    // Wrong answers: slight element changes to look plausible
+    const wrongGen=()=>{
+      const w=R.map(row=>row.map(v=>v+rI(-4,4)||v+1));
+      return mS(w);
+    };
+    const opts=makeOpts(cor,wrongGen);
     return{text:`Вычислите A^${n}:\nA = ${mS(A)}`,options:opts,correct:cor};
   },
   minor(){
@@ -1008,9 +1169,11 @@ const G={
     const isMinor=Math.random()<0.5;
     const cor=String(isMinor?minorVal:cofactor);
     const w=new Set();
-    while(w.size<3){const v=rI(-50,50);if(String(v)!==cor)w.add(v);}
+    const minorMistakes=[minorVal+rI(1,6), -minorVal, cofactor+rI(1,4), -cofactor, minorVal*2];
+    for(const v of minorMistakes){if(String(v)!==cor&&!w.has(v))w.add(String(v));if(w.size>=3)break;}
+    while(w.size<3){const v=rI(-60,60);if(String(v)!==cor&&!w.has(String(v)))w.add(String(v));}
     return{
-      text:`Найдите ${isMinor?`минор M${r+1}${c+1}`:`алгебраическое дополнение A${r+1}${c+1}`} элемента (${r+1},${c+1}):\n${mS(m)}`,
+      text:`Найдите ${isMinor?'минор M'+(r+1)+(c+1):'алгебраическое дополнение A'+(r+1)+(c+1)} элемента (${r+1},${c+1}):\n${mS(m)}`,
       options:shuf([cor,...[...w].map(String)]),
       correct:cor
     };
@@ -1373,10 +1536,65 @@ async function loadHistory(){
   try{
     const res=await apiGet(`/api/tests/results/user/${user.id}`);
     if(!res.length){c.innerHTML='<div class="history-empty">Вы ещё не проходили тесты 📝</div>';return;}
-    c.innerHTML=res.map(r=>{const sc=r.percentage>=70?'sg':r.percentage>=50?'sy':'sr';const mm=String(Math.floor(r.time_spent/60)).padStart(2,'0'),ss=String(r.time_spent%60).padStart(2,'0');const date=r.timestamp?new Date(r.timestamp).toLocaleString('ru-RU'):'—';return`<div class="hcard"><div><div class="hcard-title">${escHtml(r.test_title)}</div><div class="hcard-meta">${date} · ${r.correct_answers} из ${r.total_questions} верных · ⏱ ${mm}:${ss}</div></div><div class="hcard-right"><div class="hscore ${sc}">${r.percentage}%</div><button class="btn-dl" onclick="downloadById(${r.id})">📄 Word</button></div></div>`;}).join('');
+    c.innerHTML=res.map(r=>{const sc=r.percentage>=70?'sg':r.percentage>=50?'sy':'sr';const mm=String(Math.floor(r.time_spent/60)).padStart(2,'0'),ss=String(r.time_spent%60).padStart(2,'0');const date=r.timestamp?new Date(r.timestamp).toLocaleString('ru-RU'):'—';return`<div class="hcard"><div><div class="hcard-title">${escHtml(r.test_title)}</div><div class="hcard-meta">${date} · ${r.correct_answers} из ${r.total_questions} верных · ⏱ ${mm}:${ss}</div></div><div class="hcard-right"><div class="hscore ${sc}">${r.percentage}%</div><button class="btn-review" onclick="showReview(${r.id})">🔍 Разбор</button><button class="btn-dl" onclick="downloadById(${r.id})">📄 Word</button></div></div>`;}).join('');
   }catch(e){c.innerHTML='<div class="history-empty">Не удалось загрузить историю</div>';}
 }
 async function downloadById(id){window.location.href=`/api/tests/results/${id}/word`;showToast('Скачивается...');}
+
+async function showReview(id){
+  try{
+    const res=await apiGet(`/api/tests/results/user/${user.id}`);
+    const r=res.find(x=>x.id===id);
+    if(!r){showToast('Не удалось загрузить');return;}
+    let detailed=[];
+    try{detailed=JSON.parse(r.detailed_results);}catch(e){}
+    document.getElementById('review-title').textContent='Разбор: '+r.test_title;
+    const mm=String(Math.floor(r.time_spent/60)).padStart(2,'0'),ss=String(r.time_spent%60).padStart(2,'0');
+    const date=r.timestamp?new Date(r.timestamp).toLocaleString('ru-RU'):'—';
+    document.getElementById('review-meta').innerHTML=
+      `${date} &nbsp;·&nbsp; <b>${r.correct_answers} из ${r.total_questions} верных</b> &nbsp;·&nbsp; ${r.percentage}% &nbsp;·&nbsp; ⏱ ${mm}:${ss}`;
+    const explainMap={
+      'сумму':'Складывайте элементы с одинаковыми позициями (i,j).',
+      'скаляр':'Умножьте каждый элемент матрицы на k.',
+      'транспон':'Строки становятся столбцами: (Aᵀ)ᵢⱼ = Aⱼᵢ.',
+      'a⁻¹':'A⁻¹ = (1/det)·[[d,−b],[−c,a]], det = ad−bc.',
+      '2×2':'det = a·d − b·c. Главная диагональ минус побочная.',
+      '3×3':'Разложение по первой строке: det = a(ei−fh) − b(di−fg) + c(dh−eg).',
+      'произведение':'c_ij = Σ a_ik·b_kj. Строка на столбец.',
+      'ранг':'Приведите к ступенчатому виду. Ранг = ненулевые строки.',
+      'систему':'x_i = det(Aᵢ)/det(A) — метод Крамера.',
+      'размер':'Формат: строки × столбцы.',
+      'степень':'A^n — перемножьте матрицу на себя n раз.',
+      'минор':'Вычеркните строку i и столбец j, возьмите определитель.'
+    };
+    function getExplain(q){
+      const ql=q.toLowerCase();
+      for(const[k,v] of Object.entries(explainMap)){if(ql.includes(k))return v;}
+      return null;
+    }
+    document.getElementById('review-body').innerHTML=detailed.map((q,i)=>{
+      const ok=q.is_correct;
+      const qText=escHtml((q.question||'').replace(/\n/g,' · '));
+      const uAns=escHtml(q.user_answer||'(не отвечено)');
+      const cAns=escHtml(q.correct_answer||'');
+      const exp=!ok?getExplain(q.question||''):null;
+      return `<div class="review-item ${ok?'correct':'wrong'}">
+        <div class="review-num">Вопрос ${i+1}</div>
+        <div class="review-q">${qText}</div>
+        <div class="review-answers">
+          <span class="review-ans-user ${ok?'ok':'err'}">${ok?'✓':'✗'} ${uAns}</span>
+          ${!ok?`<span class="review-ans-correct">✓ ${cAns}</span>`:''}
+        </div>
+        ${exp?`<div class="review-explain">💡 ${escHtml(exp)}</div>`:''}
+      </div>`;
+    }).join('');
+    document.getElementById('review-modal').classList.add('open');
+  }catch(e){showToast('Ошибка загрузки разбора');}
+}
+function closeReview(e){
+  if(e&&e.target!==document.getElementById('review-modal'))return;
+  document.getElementById('review-modal').classList.remove('open');
+}
 
 /* ═══════════════════════════════════════════
    WORD
@@ -1397,7 +1615,12 @@ function seededRand(seed) {
 
 function getTodaySeed() {
   const d = new Date();
-  return d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
+  // Use day of year for more variation
+  const start = new Date(d.getFullYear(), 0, 0);
+  const diff = d - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dayOfYear = Math.floor(diff / oneDay);
+  return d.getFullYear() * 1000 + dayOfYear;
 }
 
 function seededInt(rand, a, b) {
@@ -1422,7 +1645,12 @@ function seededShuffle(rand, arr) {
 function generateDailyTask() {
   const seed = getTodaySeed();
   const rand = seededRand(seed);
-  const type = seededInt(rand, 0, 5);
+  // Use day of year mod 7 to rotate through task types + rand for variety
+  const dToday = new Date();
+  const start = new Date(dToday.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((dToday - start) / 86400000);
+  const baseType = dayOfYear % 6; // cycles 0-5 over 6 days
+  const type = baseType; // deterministic by day
   // types: 0=det3, 1=inverse, 2=multiply3, 3=det2hard, 4=rank3, 5=sle3
 
   if (type === 0) {
@@ -1446,11 +1674,11 @@ function generateDailyTask() {
     let tries = 0;
     do {
       m = seededMatrix(rand, 2, 2, -4, 5);
-      const d = m[0][0]*m[1][1] - m[0][1]*m[1][0];
-      inv = d !== 0 ? [[m[1][1]/d, -m[0][1]/d], [-m[1][0]/d, m[0][0]/d]] : null;
+      const det = m[0][0]*m[1][1] - m[0][1]*m[1][0];
+      inv = det !== 0 ? [[m[1][1]/det, -m[0][1]/det], [-m[1][0]/det, m[0][0]/det]] : null;
       tries++;
     } while (!inv && tries < 20);
-    if (!inv) { m = [[2,1],[1,3]]; const d=5; inv=[[3/d,-1/d],[-1/d,2/d]]; }
+    if (!inv) { m = [[2,1],[1,3]]; const detFallback=5; inv=[[3/detFallback,-1/detFallback],[-1/detFallback,2/detFallback]]; }
     const fmt = n => { const r=Math.round(n*100)/100; return r===Math.floor(r)?String(r):r.toFixed(2); };
     const cor = '[' + inv.map(r=>'['+r.map(fmt).join(', ')+']').join(', ') + ']';
     const wrongs = [];
@@ -1524,8 +1752,8 @@ B = ${mS(B)}`,
   // type 5 — SLE 3 variables (2x2 system with bigger numbers)
   const A = seededMatrix(rand, 2, 2, -4, 4);
   const b = [seededInt(rand,-8,8), seededInt(rand,-8,8)];
-  const d = d2(A);
-  if (d === 0) {
+  const detA = d2(A);
+  if (detA === 0) {
     // fallback to det3
     const m = seededMatrix(rand, 3, 3, -4, 5);
     const cv = d3(m);
@@ -1533,8 +1761,8 @@ B = ${mS(B)}`,
     while(ww.size<3){const v=seededInt(rand,-300,300);if(v!==cv)ww.add(v);}
     return {type:'det3',title:'Вычислите определитель матрицы 3×3',question:mS(m),options:seededShuffle(rand,[cv,...[...ww]]).map(String),correct:String(cv),hint:'Разложите по первой строке со знаками +−+'};
   }
-  const x1 = d2([[b[0],A[0][1]],[b[1],A[1][1]]]) / d;
-  const x2 = d2([[A[0][0],b[0]],[A[1][0],b[1]]]) / d;
+  const x1 = d2([[b[0],A[0][1]],[b[1],A[1][1]]]) / detA;
+  const x2 = d2([[A[0][0],b[0]],[A[1][0],b[1]]]) / detA;
   const fmt2 = n => { const r=Math.round(n*100)/100; return r===Math.floor(r)?String(r):r.toFixed(2); };
   const cor = `x₁=${fmt2(x1)}, x₂=${fmt2(x2)}`;
   const wrong2 = [];
@@ -1600,13 +1828,15 @@ function buildDailyPage() {
         <div class="daily-badge">🌟 Задача дня выполнена</div>
         ${qHtml}
         <div class="daily-options">
-          ${dailyTask.options.map(opt => `
-            <label class="option ${opt===dailyTask.correct?'selected':''}" style="cursor:default;${opt===dailyTask.correct?'border-color:#22c55e;background:#f0fdf4':''}${opt===savedAnswer&&!wasCorrect?';border-color:#ef4444;background:#fef2f2':''}">
-              <input type="radio" disabled ${opt===savedAnswer?'checked':''}><span class="mono">${escHtml(opt)}</span>
-            </label>`).join('')}
+          ${dailyTask.options.map(opt => {
+            const isCor=opt===dailyTask.correct, isWrong=opt===savedAnswer&&!wasCorrect;
+            const style='cursor:default;'+(isCor?'border-color:#22c55e;background:#f0fdf4':'')+(isWrong?';border-color:#ef4444;background:#fef2f2':'');
+            return '<label class="option '+(isCor?'selected':'')+'" style="'+style+'"><input type="radio" disabled '+(opt===savedAnswer?'checked':'')+'>'+
+              '<span class="mono">'+escHtml(opt)+'</span></label>';
+          }).join('')}
         </div>
         <div class="daily-result ${wasCorrect?'correct':'wrong'}" style="display:block">
-          ${wasCorrect ? '✓ Верно! Отличная работа!' : `✗ Неверно. Правильный ответ: ${dailyTask.correct}<div class="daily-explain">💡 ${dailyTask.hint}</div>`}
+          ${wasCorrect ? '✓ Верно! Отличная работа!' : '✗ Неверно. Правильный ответ: '+escHtml(dailyTask.correct)+'<div class="daily-explain">💡 '+escHtml(dailyTask.hint)+'</div>'}
         </div>
       </div>
       <div class="daily-done">
@@ -1623,10 +1853,7 @@ function buildDailyPage() {
       <div class="daily-badge">🌟 Задача дня · Повышенная сложность</div>
       ${qHtml}
       <div class="daily-options" id="daily-opts">
-        ${dailyTask.options.map((opt,i) => `
-          <label class="option" id="dopt-${i}" onclick="selectDailyOpt(${i},this)">
-            <input type="radio" name="daily"><span class="mono">${escHtml(opt)}</span>
-          </label>`).join('')}
+        ${dailyTask.options.map((opt,i) => '<label class="option" id="dopt-'+i+'" onclick="selectDailyOpt('+i+',this)"><input type="radio" name="daily"><span class="mono">'+escHtml(opt)+'</span></label>').join('')}
       </div>
       <div class="daily-result" id="daily-result"></div>
       <button class="btn-start" id="btn-daily-submit" style="margin-top:14px;display:none" onclick="submitDaily()">Проверить ответ</button>
@@ -1677,7 +1904,7 @@ function submitDaily() {
   resEl.className = 'daily-result ' + (correct?'correct':'wrong');
   resEl.innerHTML = correct
     ? '✓ Верно! Отличная работа! 🎉'
-    : `✗ Неверно. Правильный ответ: ${escHtml(dailyTask.correct)}<div class="daily-explain">💡 ${escHtml(dailyTask.hint)}</div>`;
+    : '✗ Неверно. Правильный ответ: '+escHtml(dailyTask.correct)+'<div class="daily-explain">💡 '+escHtml(dailyTask.hint)+'</div>';
 
   document.getElementById('btn-daily-submit').style.display = 'none';
 }
