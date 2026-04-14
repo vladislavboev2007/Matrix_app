@@ -9,7 +9,7 @@
 :root {
   --black:#0a0a0a; --white:#fafafa;
   --g100:#f5f5f5; --g200:#e8e8e8; --g300:#d0d0d0; --g400:#a0a0a0; --g600:#555;
-  --easy:#22c55e; --medium:#f59e0b; --hard:#ef4444; --accent:#6366f1;
+  --easy:#22c55e; --medium:#f59e0b; --hard:#ef4444; --accent:#0a0a0a;
   --panel-w:260px; --r:12px; --rlg:20px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -324,6 +324,91 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--g100);color:var(--b
 .daily-done-icon{font-size:40px;margin-bottom:8px;}
 .daily-done-title{font-size:16px;font-weight:700;margin-bottom:4px;}
 .daily-done-sub{font-size:13px;color:var(--g400);}
+/* ══════════════════════════════════════════
+   SUPERUSER
+══════════════════════════════════════════ */
+.login-toggle{display:flex;gap:0;border:2px solid var(--black);border-radius:var(--r);overflow:hidden;margin-bottom:28px;}
+.login-toggle-btn{flex:1;background:none;border:none;padding:10px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,color .15s;color:var(--g600);}
+.login-toggle-btn.active{background:var(--black);color:var(--white);}
+.login-panel{display:none;} .login-panel.active{display:block;}
+
+#screen-super{flex-direction:column;}
+.super-topbar{background:var(--black);color:var(--white);height:64px;display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:200;}
+.super-topbar-logo{font-size:18px;font-weight:700;letter-spacing:5px;}
+.super-topbar-badge{background:var(--black);color:white;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.super-topbar-right{margin-left:auto;display:flex;gap:12px;}
+.btn-super-nav{background:rgba(255,255,255,.12);color:var(--white);border:none;border-radius:var(--r);padding:9px 16px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;}
+.btn-super-nav:hover{background:rgba(255,255,255,.22);}
+.btn-super-nav.active{background:var(--white);color:var(--black);}
+.super-body{flex:1;padding:32px 40px;max-width:1000px;margin:0 auto;width:100%;}
+.super-page{display:none;} .super-page.active{display:block;}
+.super-section-title{font-size:22px;font-weight:700;margin-bottom:6px;}
+.super-section-sub{color:var(--g600);font-size:14px;margin-bottom:24px;}
+
+/* test cards in super */
+.stest-card{background:var(--white);border:2px solid var(--black);border-radius:var(--rlg);padding:20px 22px;margin-bottom:12px;box-shadow:3px 3px 0 var(--black);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.stest-card.custom{border-color:var(--black);box-shadow:3px 3px 0 var(--black);}
+.stest-card-left{flex:1;}
+.stest-card-title{font-size:16px;font-weight:700;margin-bottom:3px;}
+.stest-card-meta{font-size:12px;color:var(--g400);}
+.stest-card-right{display:flex;gap:8px;flex-shrink:0;}
+.btn-edit{background:var(--g100);border:2px solid var(--g200);border-radius:var(--r);padding:7px 14px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;}
+.btn-edit:hover{border-color:var(--black);}
+.btn-del{background:#fef2f2;border:2px solid #fca5a5;color:#991b1b;border-radius:var(--r);padding:7px 14px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;}
+.btn-del:hover{background:#fee2e2;}
+.badge-custom{background:var(--black);}
+.badge-builtin{background:var(--g400);}
+
+/* modal for test editor */
+.super-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:600;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
+.super-modal-overlay.open{display:flex;}
+.super-modal{background:var(--white);border:2px solid var(--black);border-radius:var(--rlg);width:100%;max-width:760px;box-shadow:8px 8px 0 var(--black);margin:auto;}
+.super-modal-header{padding:22px 26px 16px;border-bottom:2px solid var(--g200);display:flex;align-items:center;justify-content:space-between;}
+.super-modal-title{font-size:18px;font-weight:700;}
+.super-modal-body{padding:24px 26px;}
+.super-modal-footer{padding:16px 26px;border-top:2px solid var(--g200);display:flex;gap:10px;justify-content:flex-end;}
+.sfield-label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;margin-top:14px;}
+.sfield-label:first-child{margin-top:0;}
+.sfield-input,.sfield-select,.sfield-textarea{width:100%;border:2px solid var(--g200);border-radius:var(--r);padding:10px 14px;font-family:inherit;font-size:14px;background:var(--white);outline:none;transition:border-color .2s;}
+.sfield-input:focus,.sfield-select:focus,.sfield-textarea:focus{border-color:var(--black);}
+.sfield-textarea{min-height:70px;resize:vertical;}
+.sfield-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.sfield-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin-top:6px;}
+.topic-chip{border:2px solid var(--g200);border-radius:var(--r);padding:8px 12px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;user-select:none;}
+.topic-chip:hover{border-color:var(--black);}
+.topic-chip.sel{border-color:var(--black);background:var(--black);color:var(--white);}
+.topic-chip-icon{font-size:16px;}
+.topic-count-badge{margin-left:auto;background:var(--g300);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;color:var(--black);}
+.topic-chip.sel .topic-count-badge{background:rgba(255,255,255,.25);color:var(--white);}
+.btn-save{background:var(--black);color:var(--white);border:none;border-radius:var(--r);padding:11px 24px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;}
+.btn-save:hover{background:#333;}
+.btn-cancel-sm{background:var(--white);color:var(--black);border:2px solid var(--g200);border-radius:var(--r);padding:11px 20px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;}
+.btn-cancel-sm:hover{border-color:var(--black);}
+.ctrl-settings-box{background:var(--g100);border:2px solid var(--g200);border-radius:var(--rlg);padding:22px;margin-bottom:22px;}
+.ctrl-settings-title{font-size:15px;font-weight:700;margin-bottom:16px;}
+.btn-add-new{background:var(--black);color:var(--white);border:none;border-radius:var(--r);padding:11px 22px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.btn-add-new:hover{background:#333;}
+.super-empty{text-align:center;padding:50px 20px;color:var(--g400);font-size:15px;}
+.ctrl-preview{background:var(--white);border:2px solid var(--g200);border-radius:var(--r);padding:14px 18px;margin-top:10px;font-size:13px;color:var(--g600);}
+
+
+/* ── CTRL EDITOR MODAL ── */
+.ctrl-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:600;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
+.ctrl-modal-overlay.open{display:flex;}
+.ctrl-modal{background:var(--white);border:2px solid var(--black);border-radius:var(--rlg);width:100%;max-width:780px;box-shadow:8px 8px 0 var(--black);margin:auto;}
+.ctrl-modal-header{padding:22px 26px 16px;border-bottom:2px solid var(--g200);display:flex;align-items:center;justify-content:space-between;}
+.ctrl-modal-title{font-size:18px;font-weight:700;}
+.ctrl-modal-body{padding:24px 26px;}
+.ctrl-modal-footer{padding:16px 26px;border-top:2px solid var(--g200);display:flex;gap:10px;justify-content:flex-end;}
+/* ctrl work cards */
+.ctrl-work-card{background:var(--white);border:2px solid var(--black);border-radius:var(--rlg);padding:20px 22px;margin-bottom:14px;box-shadow:4px 4px 0 var(--black);}
+.ctrl-work-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.ctrl-work-card-title{font-size:17px;font-weight:700;}
+.ctrl-work-card-desc{font-size:13px;color:var(--g600);margin-bottom:10px;}
+.ctrl-work-card-meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+.ctrl-work-card-topics{font-size:12px;color:var(--g600);background:var(--g100);border-radius:var(--r);padding:8px 12px;margin-bottom:14px;line-height:1.7;}
+.ctrl-work-card-actions{display:flex;gap:8px;flex-wrap:wrap;}
 </style>
 </head>
 <body>
@@ -333,18 +418,34 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--g100);color:var(--b
   <div class="login-card">
     <div class="logo-big">M a t r i X</div>
     <div class="logo-sub">система тестирования по матрицам</div>
-    <label class="field-label">Имя</label>
-    <input class="field-input" id="inp-name" type="text" placeholder="Введите имя">
-    <label class="field-label">Фамилия</label>
-    <input class="field-input" id="inp-surname" type="text" placeholder="Введите фамилию">
-    <label class="field-label">Класс</label>
-    <select class="field-select" id="inp-class">
-      <option value="">— Выберите класс —</option>
-      <option value="9">9 класс</option>
-      <option value="10">10 класс</option>
-      <option value="11">11 класс</option>
-    </select>
-    <button class="btn-primary" id="btn-login" onclick="doLogin()">Войти в систему</button>
+    <!-- tabs -->
+    <div class="login-toggle">
+      <button class="login-toggle-btn active" id="tab-student" onclick="switchLoginTab('student')">👤 Ученик</button>
+      <button class="login-toggle-btn" id="tab-super" onclick="switchLoginTab('super')">🔑 Администратор</button>
+    </div>
+    <!-- student panel -->
+    <div class="login-panel active" id="lpanel-student">
+      <label class="field-label">Имя</label>
+      <input class="field-input" id="inp-name" type="text" placeholder="Введите имя" onkeydown="if(event.key==='Enter')document.getElementById('inp-surname').focus()">
+      <label class="field-label">Фамилия</label>
+      <input class="field-input" id="inp-surname" type="text" placeholder="Введите фамилию">
+      <label class="field-label">Класс</label>
+      <select class="field-select" id="inp-class">
+        <option value="">— Выберите класс —</option>
+        <option value="9">9 класс</option>
+        <option value="10">10 класс</option>
+        <option value="11">11 класс</option>
+      </select>
+      <button class="btn-primary" id="btn-login" onclick="doLogin()">Войти в систему</button>
+    </div>
+    <!-- admin panel -->
+    <div class="login-panel" id="lpanel-super">
+      <label class="field-label">Логин</label>
+      <input class="field-input" id="inp-super-login" type="text" placeholder="Введите логин" autocomplete="off" onkeydown="if(event.key==='Enter')document.getElementById('inp-super-pass').focus()">
+      <label class="field-label">Пароль</label>
+      <input class="field-input" id="inp-super-pass" type="password" placeholder="Введите пароль" onkeydown="if(event.key==='Enter')doSuperLogin()">
+      <button class="btn-primary" id="btn-super-login" onclick="doSuperLogin()" style="">🔑 Войти как администратор</button>
+    </div>
   </div>
 </div>
 
@@ -418,24 +519,9 @@ body{font-family:'Space Grotesk',sans-serif;background:var(--g100);color:var(--b
       <!-- PAGE: Контрольная -->
       <div class="page" id="page-control">
         <div class="page-title">Контрольная работа</div>
-        <div class="page-subtitle">Проверка знаний по всем операциям с матрицами</div>
-        <div class="test-card">
-          <div class="test-card-title">Итоговая контрольная работа</div>
-          <div class="test-card-desc">Задания по всем изученным операциям: сложение, умножение, транспонирование, определители, ранг, обратная матрица, СЛУ</div>
-          <div class="test-card-meta">
-            <span class="badge badge-ctrl">Контрольная</span>
-            <span class="meta-item">📝 15–20 вопросов</span>
-            <span class="meta-item">🕐 60 минут</span>
-            <span class="meta-item">⭐ Оценка 2–5</span>
-          </div>
-          <div style="background:var(--g100);border:2px solid var(--g200);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:13px;line-height:1.9">
-            <b>Шкала оценок:</b>&nbsp;
-            <span style="color:#22c55e;font-weight:700">5</span> — от 80%&nbsp;&nbsp;
-            <span style="color:#84cc16;font-weight:700">4</span> — от 60%&nbsp;&nbsp;
-            <span style="color:#f59e0b;font-weight:700">3</span> — от 40%&nbsp;&nbsp;
-            <span style="color:#ef4444;font-weight:700">2</span> — ниже 40%
-          </div>
-          <button class="btn-start" onclick="startControlWork()">Начать контрольную работу</button>
+        <div class="page-subtitle">Параметры заданы преподавателем</div>
+        <div class="test-card" id="ctrl-student-card">
+          <!-- заполняется динамически через buildStudentCtrlPage() -->
         </div>
       </div>
 
@@ -702,7 +788,7 @@ A₁₂ = (−1)^(1+2) · M₁₂ = (−1)³ · (−6) = +6</div>
 <div id="screen-info" class="screen">
   <div class="info-header">
     <div class="info-logo">M a t r i X</div>
-    <button class="btn-back" onclick="showScreen('main')">← Назад</button>
+    <button class="btn-back" onclick="goBackFromInfo()">← Назад</button>
   </div>
   <div class="info-content">
     <div class="info-card-title" id="info-title"></div>
@@ -756,13 +842,146 @@ A₁₂ = (−1)^(1+2) · M₁₂ = (−1)³ · (−6) = +6</div>
       <div class="result-comment" id="res-comment"></div>
       <div class="result-buttons">
         <button class="btn-word" id="btn-word" onclick="downloadWord()">📄 Результаты в Word</button>
-        <button class="btn-primary" onclick="showScreen('main')">Вернуться к списку</button>
+        <button class="btn-primary" onclick="returnFromResult()">Вернуться к списку</button>
       </div>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
+<!-- ══════════ SUPER SCREEN ══════════ -->
+<div id="screen-super" class="screen" style="flex-direction:column;">
+
+  <!-- TOPBAR (same style as student) -->
+  <div class="topbar">
+    <div class="topbar-logo">M a t r i X</div>
+    <span class="super-topbar-badge" style="font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;background:var(--black);color:var(--white);border:2px solid var(--black);">⚙️ Администратор</span>
+    <div class="topbar-right">
+      <div>
+        <div class="topbar-user-name">Администратор</div>
+        <div class="topbar-user-grade">Полный доступ</div>
+      </div>
+      <button class="btn-logout" onclick="doSuperLogout()">→ Выход</button>
+    </div>
+  </div>
+
+  <!-- BODY ROW (same structure as student) -->
+  <div class="body-row">
+
+    <!-- SLIDE PANEL -->
+    <div class="panel-wrapper" id="super-panel-wrapper">
+      <div class="slide-panel" id="super-slide-panel">
+
+        <div class="panel-section-label">Тесты</div>
+        <button class="panel-btn active" id="spb-tests"   onclick="superPage('tests')">  <span class="pb-icon">📋</span>Тесты</button>
+        <button class="panel-btn"        id="spb-typed"   onclick="superPage('typed')">  <span class="pb-icon">🎯</span>Типовые задания</button>
+        <button class="panel-btn"        id="spb-control" onclick="superPage('control')"><span class="pb-icon">📝</span>Контрольная</button>
+
+        <div class="panel-divider"></div>
+        <div class="panel-section-label">Управление</div>
+        <button class="panel-btn"        id="spb-manage"  onclick="superPage('manage')"> <span class="pb-icon">⚙️</span>Мои тесты</button>
+
+      </div>
+      <button class="panel-toggle" id="super-panel-toggle" onclick="toggleSuperPanel()" title="Скрыть/показать панель">
+        <svg width="14" height="14" viewBox="0 0 14 14"><path d="M9 2L4 7l5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+      <!-- PAGE: Тесты (view-only, same as student) -->
+      <div class="page active" id="spage-tests">
+        <div class="page-title">Доступные тесты</div>
+        <div class="page-subtitle">Предпросмотр тестов как у учеников</div>
+        <div id="super-test-list-container"></div>
+      </div>
+
+      <!-- PAGE: Типовые (view-only) -->
+      <div class="page" id="spage-typed">
+        <div class="page-title">Типовые задания</div>
+        <div class="page-subtitle">Предпросмотр режима типовых заданий</div>
+        <div class="typed-grid" id="super-typed-grid"></div>
+        <div class="qty-box" id="super-qty-box" style="display:none">
+          <div class="qty-box-title">Количество вопросов:</div>
+          <div class="qty-btns">
+            <button class="qty-btn sel" id="sqty-5"  onclick="selectSuperQty(5)">5</button>
+            <button class="qty-btn"     id="sqty-10" onclick="selectSuperQty(10)">10</button>
+            <button class="qty-btn"     id="sqty-15" onclick="selectSuperQty(15)">15</button>
+          </div>
+        </div>
+        <button class="btn-start" id="super-btn-start-typed" style="display:none" onclick="startSuperTypedTest()">Начать задания</button>
+      </div>
+
+      <!-- PAGE: Контрольные работы — список + создание -->
+      <div class="page" id="spage-control">
+        <div class="page-title">Контрольные работы</div>
+        <div class="page-subtitle">Создавайте контрольные — ученики увидят их в своём разделе</div>
+        <button class="btn-add-new" onclick="openCtrlEditor(null)">＋ Создать контрольную работу</button>
+        <div id="super-ctrl-list"><!-- filled by JS --></div>
+      </div>
+
+      <!-- PAGE: Управление тестами -->
+      <div class="page" id="spage-manage">
+        <div class="page-title">Управление тестами</div>
+        <div class="page-subtitle">Создавайте и редактируйте собственные тесты</div>
+        <button class="btn-add-new" onclick="openTestEditor(null)">＋ Создать новый тест</button>
+        <div id="super-tests-list"></div>
+      </div>
+
+      <!-- spage-ctrlset removed, merged into spage-control -->
+      <div class="page" id="spage-ctrlset" style="display:none!important"></div>
+
+    </div><!-- /main-content -->
+  </div><!-- /body-row -->
+</div>
+
+<!-- TEST EDITOR MODAL -->
+<div class="super-modal-overlay" id="test-editor-modal">
+  <div class="super-modal">
+    <div class="super-modal-header">
+      <div class="super-modal-title" id="editor-modal-title">Новый тест</div>
+      <button class="modal-close" onclick="closeTestEditor()">✕</button>
+    </div>
+    <div class="super-modal-body">
+      <div class="sfield-row">
+        <div>
+          <label class="sfield-label">Название теста</label>
+          <input class="sfield-input" id="ed-title" placeholder="Например: Тест по определителям">
+        </div>
+        <div>
+          <label class="sfield-label">Сложность</label>
+          <select class="sfield-select" id="ed-diff">
+            <option value="easy">🟢 Лёгкий</option>
+            <option value="medium">🟡 Средний</option>
+            <option value="hard">🔴 Сложный</option>
+          </select>
+        </div>
+      </div>
+      <label class="sfield-label">Описание теста</label>
+      <input class="sfield-input" id="ed-desc" placeholder="Краткое описание содержания теста">
+      <div class="sfield-row">
+        <div>
+          <label class="sfield-label">Количество вопросов</label>
+          <input class="sfield-input" id="ed-qcount" type="number" min="3" max="30" value="5">
+        </div>
+        <div>
+          <label class="sfield-label">Время (минуты)</label>
+          <input class="sfield-input" id="ed-time" type="number" min="5" max="120" value="15">
+        </div>
+      </div>
+      <label class="sfield-label" style="margin-top:18px;">📚 Типы задач (отметьте нужные)</label>
+      <div style="font-size:12px;color:var(--g400);margin-bottom:8px;">Нажмите на тему — выберите количество вопросов по ней. Общее число вопросов подстраивается автоматически.</div>
+      <div class="topics-grid" id="ed-topics-grid"></div>
+      <div class="ctrl-preview" id="ed-preview" style="margin-top:14px;"></div>
+    </div>
+    <div class="super-modal-footer">
+      <button class="btn-cancel-sm" onclick="closeTestEditor()">Отмена</button>
+      <button class="btn-save" onclick="saveTest()">💾 Сохранить тест</button>
+    </div>
+  </div>
+</div>
+
 
 <!-- REVIEW MODAL -->
 <div class="modal-overlay" id="review-modal" onclick="closeReview(event)">
@@ -782,6 +1001,9 @@ A₁₂ = (−1)^(1+2) · M₁₂ = (−1)³ · (−6) = +6</div>
 ═══════════════════════════════════════════ */
 async function apiPost(path,body){const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.detail||'Ошибка');}return r.json();}
 async function apiGet(path){const r=await fetch(path);if(!r.ok)throw new Error('Ошибка');return r.json();}
+async function apiPut(path,body){const r=await fetch(path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.detail||'Ошибка');}return r.json();}
+async function apiPatch(path,body={}){const r=await fetch(path,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.detail||'Ошибка');}return r.json();}
+async function apiDelete(path){const r=await fetch(path,{method:'DELETE'});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.detail||'Ошибка');}return r.json();}
 
 /* ═══════════════════════════════════════════
    STATE
@@ -790,6 +1012,7 @@ let user=null,currentTestDef=null,currentQuestions=[],currentAnswers={},currentQ
 let timerRemaining=0,timerInterval=null,testStartTime=0,lastResultId=null;
 let currentMode='test',selectedOperation=null,selectedQty=5;
 let panelOpen=true;
+let launchScreen='main'; // 'main' or 'super' — where to return after test
 
 /* ═══════════════════════════════════════════
    PANEL
@@ -811,6 +1034,49 @@ function switchPage(name){
   if(name==='history')loadHistory();
   if(name==='daily')buildDailyPage();
   if(name==='theory')setTimeout(initTheoryScroll,100);
+  if(name==='control'){ _customCtrlsCacheInvalidate(); buildStudentCtrlPage(); }
+}
+
+async function buildStudentCtrlPage(){
+  const container = document.getElementById('ctrl-student-card');
+  if(!container) return;
+  const allCtrls = await loadCustomCtrls();
+  const ctrls = allCtrls.filter(c => c.active && (!c.grade || c.grade === String(userGrade())));
+
+  const gradeScale = `<div style="background:var(--g100);border:2px solid var(--g200);border-radius:var(--r);padding:10px 16px;margin-bottom:16px;font-size:13px;line-height:1.9">
+    <b>Шкала оценок:</b>&nbsp;
+    <span style="color:#22c55e;font-weight:700">5</span> — от 80%&nbsp;&nbsp;
+    <span style="color:#84cc16;font-weight:700">4</span> — от 60%&nbsp;&nbsp;
+    <span style="color:#f59e0b;font-weight:700">3</span> — от 40%&nbsp;&nbsp;
+    <span style="color:#ef4444;font-weight:700">2</span> — ниже 40%
+  </div>`;
+
+  if(!ctrls.length){
+    container.innerHTML = `<div style="text-align:center;padding:48px 20px;color:var(--g400);font-size:15px;">
+      📋 Контрольных работ пока нет<br><span style="font-size:13px">Преподаватель ещё не добавил контрольные</span>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = ctrls.map((c) => {
+    const topicNames = (c.topicKeys||[]).map(k=>{const ti=ALL_TOPIC_INFO.find(x=>x.key===k);return ti?ti.icon+' '+ti.title:k;}).join(' · ');
+    const realIdx = allCtrls.findIndex(x => x.id === c.id);
+    return `<div class="test-card" style="margin-bottom:16px;">
+      <div class="test-card-title">${escHtml(c.title)}</div>
+      ${c.desc ? `<div class="test-card-desc">${escHtml(c.desc)}</div>` : ''}
+      <div class="test-card-meta">
+        <span class="badge badge-ctrl">Контрольная</span>
+        <span class="meta-item">📝 ${c.qcount} вопросов</span>
+        <span class="meta-item">🕐 ${c.time} мин</span>
+        <span class="meta-item">⭐ Оценка 2–5</span>
+      </div>
+      <div style="background:var(--g100);border:2px solid var(--g200);border-radius:var(--r);padding:10px 16px;margin-bottom:14px;font-size:13px;line-height:1.8">
+        <b>Темы:</b> ${escHtml(topicNames||'—')}
+      </div>
+      ${gradeScale}
+      <button class="btn-start" onclick="startCustomCtrlWork(${realIdx})">Начать контрольную работу</button>
+    </div>`;
+  }).join('');
 }
 
 /* ═══════════════════════════════════════════
@@ -1355,7 +1621,7 @@ function randomQGen(topic){
 }
 
 const TG={add:()=>randomQGen('add'),multiply:()=>randomQGen('multiply'),transpose:()=>randomQGen('transpose'),inverse:()=>G.inverse(),det:()=>G.det(),rank:()=>G.rank(),sle:()=>G.sle(),scalar:()=>randomQGen('scalar'),size:()=>randomQGen('size'),matpow:()=>G.matpow(),minor:()=>G.minor()};
-const CG={add:()=>randomQGen('add'),multiply:()=>randomQGen('multiply'),transpose:()=>randomQGen('transpose_check'),scalar:()=>randomQGen('scalar'),size:()=>randomQGen('size'),det2:()=>randomQGen('det2'),det3:()=>G.det3(),inverse:()=>G.inverse(),rank:()=>G.rank(),sle:()=>G.sle(),matpow:()=>G.matpow(),minor:()=>G.minor()};
+const CG={add:()=>randomQGen('add'),multiply:()=>randomQGen('multiply'),transpose:()=>randomQGen('transpose_check'),scalar:()=>randomQGen('scalar'),size:()=>randomQGen('size'),det:()=>randomQGen('det2'),det2:()=>randomQGen('det2'),det3:()=>G.det3(),inverse:()=>G.inverse(),rank:()=>G.rank(),sle:()=>G.sle(),matpow:()=>G.matpow(),minor:()=>G.minor()};
 
 /* ═══════════════════════════════════════════
    LOGIN
@@ -1373,7 +1639,7 @@ async function doLogin(){
     user={id:data.id,name,surname,cls};
     document.getElementById('top-name').textContent=name+' '+surname;
     document.getElementById('top-grade').textContent=cls+' класс';
-    buildTestList();buildTypedGrid();
+    await buildAllTestsList();buildTypedGrid();await buildStudentCtrlPage();
     switchPage('tests');showScreen('main');
   }catch(e){showToast('Ошибка: '+e.message);}
   finally{btn.disabled=false;btn.textContent='Войти в систему';}
@@ -1421,9 +1687,9 @@ function selectQty(n){selectedQty=n;document.querySelectorAll('.qty-btn').forEac
 /* ═══════════════════════════════════════════
    START FLOWS
 ═══════════════════════════════════════════ */
-function openTestInfo(id){currentMode='test';currentTestDef=TESTS.find(t=>t.id===id);openInfo();}
+async function openTestInfo(id){currentMode='test';const custom=await loadCustomTests();const all=[...TESTS,...custom];currentTestDef=all.find(t=>t.id===id);openInfo();}
 function startTypedTest(){if(!selectedOperation){showToast('Выберите операцию!');return;}if(isTopicLocked(selectedOperation)){showToast('Эта тема недоступна для вашего класса 🔒');return;}const op=TYPED_OPS.find(o=>o.key===selectedOperation);currentMode='typed';currentTestDef={id:100+TYPED_OPS.indexOf(op),title:'Типовые: '+op.title,desc:op.desc,diffLabel:'Типовые',questions:selectedQty,time:45,topics:[]};openInfo();}
-function startControlWork(){
+function startControlWork_builtin(){
   currentMode='control';
   const total=rI(15,20);
   const avail = GRADE_TOPICS[userGrade()]||GRADE_TOPICS[9];
@@ -1431,7 +1697,16 @@ function startControlWork(){
   currentTestDef={id:999,title:'Контрольная работа',desc:'Проверка знаний по всем операциям',diffLabel:'Контрольная',questions:total,time:60,topics:shuf(pool).slice(0,total)};
   openInfo();
 }
+function goBackFromInfo(){
+  if(launchScreen==='super'){
+    showScreen('super');
+    superPage(currentSuperPage||'tests');
+  } else {
+    showScreen('main');
+  }
+}
 function openInfo(){
+  launchScreen = superUser ? 'super' : 'main';
   document.getElementById('info-title').textContent=currentTestDef.title;
   document.getElementById('info-desc').textContent=currentTestDef.desc;
   document.getElementById('info-q-count').textContent='Количество вопросов: '+currentTestDef.questions;
@@ -1445,8 +1720,13 @@ function openInfo(){
 ═══════════════════════════════════════════ */
 function startTest(){
   if(currentMode==='typed') currentQuestions=Array(currentTestDef.questions).fill(null).map(()=>TG[selectedOperation]());
-  else if(currentMode==='control') currentQuestions=currentTestDef.topics.map(t=>CG[t]());
-  else currentQuestions=currentTestDef.topics.map(t=>randomQGen(t)||G[t]());
+  else if(currentMode==='control'){
+    currentQuestions=currentTestDef.topics.map(t=>{const fn=CG[t];return fn?fn():null;}).filter(Boolean);
+    if(!currentQuestions.length){showToast('Не удалось сгенерировать вопросы');return;}
+  }
+  else currentQuestions=currentTestDef.topics.map(t=>randomQGen(t)||(G[t]?G[t]():null)||G.add()).filter(Boolean);
+  if(!currentQuestions.length){showToast('Не удалось сгенерировать вопросы');return;}
+  currentQuestions=shuf(currentQuestions); // random order every time
   currentAnswers={};currentQ=0;lastResultId=null;
   timerRemaining=currentTestDef.time*60;testStartTime=Date.now();
   showScreen('question');renderQ();startTimer();
@@ -1495,7 +1775,7 @@ function nextQuestion(){
     if(inp) currentAnswers[currentQ]=inp.value.trim();
     if(!currentAnswers[currentQ]){showToast('Введите ответ!');return;}
   } else if(currentAnswers[currentQ]===undefined){showToast('Выберите ответ!');return;}if(currentQ<currentQuestions.length-1){currentQ++;renderQ();}else finishTest(false);}
-function cancelTest(){clearInterval(timerInterval);showScreen('main');}
+function cancelTest(){clearInterval(timerInterval);showScreen(launchScreen);if(launchScreen==='super'){superPage(currentSuperPage||'tests');}}
 
 /* ═══════════════════════════════════════════
    FINISH
@@ -1504,29 +1784,7 @@ const GCOL={5:'#22c55e',4:'#84cc16',3:'#f59e0b',2:'#ef4444'};
 const GEMO={5:'🏆',4:'👍',3:'📚',2:'📖'};
 function grade(p){return p>=80?5:p>=60?4:p>=40?3:2;}
 
-async function finishTest(timeout){
-  clearInterval(timerInterval);
-  const elapsed=Math.floor((Date.now()-testStartTime)/1000);
-  let correct=0;currentQuestions.forEach((q,i)=>{if(currentAnswers[i]===q.correct)correct++;});
-  const tot=currentQuestions.length,pct=Math.round(correct/tot*100);
-  const mm=String(Math.floor(elapsed/60)).padStart(2,'0'),ss=String(elapsed%60).padStart(2,'0');
-  document.getElementById('res-test-name').textContent=currentTestDef.title;
-  document.getElementById('res-percent').textContent=pct+'%';
-  document.getElementById('res-correct').textContent=`Правильных: ${correct} из ${tot}`;
-  document.getElementById('res-time').textContent=`Затрачено: ${mm}:${ss}`;
-  const gEl=document.getElementById('res-grade');
-  if(currentMode==='control'){const g=grade(pct);gEl.style.display='';gEl.textContent=`Оценка: ${g}`;gEl.style.color=GCOL[g];document.getElementById('res-icon').textContent=GEMO[g];}
-  else{gEl.style.display='none';document.getElementById('res-icon').textContent='✅';}
-  let comment=pct>=90?'Отличный результат! 🎉':pct>=70?'Хороший результат! 👍':pct>=50?'Неплохо, есть куда расти 📚':'Нужно повторить материал 📖';
-  if(timeout)comment='Время вышло! '+comment;
-  document.getElementById('res-comment').textContent=comment;
-  const wb=document.getElementById('btn-word');
-  wb.disabled=true;wb.innerHTML='<span class="spinner spinner-dark"></span> Сохранение...';
-  showScreen('result');
-  const detailed=currentQuestions.map((q,i)=>({question:q.text,user_answer:currentAnswers[i]??'(не отвечено)',correct_answer:q.correct,is_correct:currentAnswers[i]===q.correct}));
-  try{const saved=await apiPost('/api/tests/results',{user_id:user.id,test_id:currentTestDef.id,test_title:currentTestDef.title,total_questions:tot,correct_answers:correct,percentage:pct,time_spent:elapsed,detailed_results:JSON.stringify(detailed)});lastResultId=saved.id;wb.disabled=false;wb.innerHTML='📄 Результаты в Word';}
-  catch(e){showToast('Результат не сохранён');wb.disabled=false;wb.innerHTML='📄 Результаты в Word';window._localResult={user,test:currentTestDef,mode:currentMode,questions:currentQuestions,answers:{...currentAnswers},correct,total:tot,pct,elapsed,date:new Date().toLocaleString('ru-RU')};}
-}
+/* finishTest defined below */
 
 /* ═══════════════════════════════════════════
    HISTORY
@@ -1816,10 +2074,47 @@ function buildDailyPage() {
       <div class="daily-streak-icon">🔥</div>
     </div>` : '';
 
+  // Build question HTML with proper matrix visualization
+  function renderDailyLine(line) {
+    const re2 = /((?:[A-Za-zА-Яа-яёЁ·\^Tᵀ⁻¹\d]+\s*=\s*)?)(\[(?:\[[\d\s,.\-]+\](?:,\s*)?)+\])/g;
+    let parts = [], m2, lastEnd = 0, hasMatrix = false;
+    while ((m2 = re2.exec(line)) !== null) {
+      hasMatrix = true;
+      const before = line.slice(lastEnd, m2.index);
+      if (before.trim()) parts.push({type:'text', val: before.trim()});
+      const label = m2[1].trim();
+      const mat = matFromStr(m2[2]);
+      if (mat && Array.isArray(mat[0])) parts.push({type:'matrix', label, mat});
+      else parts.push({type:'text', val: m2[0]});
+      lastEnd = m2.index + m2[0].length;
+    }
+    const tail = line.slice(lastEnd).trim();
+    if (tail) parts.push({type:'text', val: tail});
+    if (!hasMatrix) return `<div class="daily-matrix mono">${escHtml(line)}</div>`;
+    let html = '<div class="mat-row" style="margin:6px 0">';
+    for (const p of parts) {
+      if (p.type === 'text') html += `<span class="mat-row-label">${escHtml(p.val)}</span>`;
+      else {
+        const lbl = p.label ? `<span class="mat-row-label">${escHtml(p.label)}</span>` : '';
+        html += `<div class="mat-row-item">${lbl}${renderMatrix(p.mat)}</div>`;
+      }
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function renderDailyOption(opt) {
+    const mat = matFromStr(opt);
+    if (mat && Array.isArray(mat[0])) {
+      return `<div class="mat-row" style="justify-content:center;margin:0">${renderMatrix(mat)}</div>`;
+    }
+    return `<span class="mono">${escHtml(opt)}</span>`;
+  }
+
   const lines = dailyTask.question.split('\n');
   let qHtml = `<div class="daily-question">${escHtml(dailyTask.title)}</div>`;
   for (let i = 0; i < lines.length; i++)
-    qHtml += `<div class="daily-matrix mono">${escHtml(lines[i])}</div>`;
+    qHtml += renderDailyLine(lines[i]);
 
   if (answeredToday) {
     const wasCorrect = savedAnswer === dailyTask.correct;
@@ -1832,11 +2127,11 @@ function buildDailyPage() {
             const isCor=opt===dailyTask.correct, isWrong=opt===savedAnswer&&!wasCorrect;
             const style='cursor:default;'+(isCor?'border-color:#22c55e;background:#f0fdf4':'')+(isWrong?';border-color:#ef4444;background:#fef2f2':'');
             return '<label class="option '+(isCor?'selected':'')+'" style="'+style+'"><input type="radio" disabled '+(opt===savedAnswer?'checked':'')+'>'+
-              '<span class="mono">'+escHtml(opt)+'</span></label>';
+              renderDailyOption(opt)+'</label>';
           }).join('')}
         </div>
         <div class="daily-result ${wasCorrect?'correct':'wrong'}" style="display:block">
-          ${wasCorrect ? '✓ Верно! Отличная работа!' : '✗ Неверно. Правильный ответ: '+escHtml(dailyTask.correct)+'<div class="daily-explain">💡 '+escHtml(dailyTask.hint)+'</div>'}
+          ${wasCorrect ? '✓ Верно! Отличная работа!' : '✗ Неверно. Правильный ответ: '+renderDailyOption(dailyTask.correct)+'<div class="daily-explain">💡 '+escHtml(dailyTask.hint)+'</div>'}
         </div>
       </div>
       <div class="daily-done">
@@ -1853,7 +2148,7 @@ function buildDailyPage() {
       <div class="daily-badge">🌟 Задача дня · Повышенная сложность</div>
       ${qHtml}
       <div class="daily-options" id="daily-opts">
-        ${dailyTask.options.map((opt,i) => '<label class="option" id="dopt-'+i+'" onclick="selectDailyOpt('+i+',this)"><input type="radio" name="daily"><span class="mono">'+escHtml(opt)+'</span></label>').join('')}
+        ${dailyTask.options.map((opt,i) => '<label class="option" id="dopt-'+i+'" onclick="selectDailyOpt('+i+',this)"><input type="radio" name="daily">'+renderDailyOption(opt)+'</label>').join('')}
       </div>
       <div class="daily-result" id="daily-result"></div>
       <button class="btn-start" id="btn-daily-submit" style="margin-top:14px;display:none" onclick="submitDaily()">Проверить ответ</button>
@@ -1904,12 +2199,788 @@ function submitDaily() {
   resEl.className = 'daily-result ' + (correct?'correct':'wrong');
   resEl.innerHTML = correct
     ? '✓ Верно! Отличная работа! 🎉'
-    : '✗ Неверно. Правильный ответ: '+escHtml(dailyTask.correct)+'<div class="daily-explain">💡 '+escHtml(dailyTask.hint)+'</div>';
+    : '✗ Неверно. Правильный ответ: '+renderDailyOption(dailyTask.correct)+'<div class="daily-explain">💡 '+escHtml(dailyTask.hint)+'</div>';
 
   document.getElementById('btn-daily-submit').style.display = 'none';
 }
 
 function dlLocal(r){function esc(t){return String(t).replace(/\\/g,'\\\\').replace(/\{/g,'\\{').replace(/\}/g,'\\}').replace(/[^\x00-\x7E]/g,c=>`\\u${c.charCodeAt(0)}?`);}const mm=String(Math.floor(r.elapsed/60)).padStart(2,'0'),ss=String(r.elapsed%60).padStart(2,'0');const lines=[['T','РЕЗУЛЬТАТЫ — MatriX'],['e',''],['n',`Дата: ${r.date}`],['n',`Ученик: ${r.user.name} ${r.user.surname}`],['n',`Класс: ${r.user.cls}`],['e',''],['n',`Тест: ${r.test.title}`],['e',''],['h','РЕЗУЛЬТАТ:'],['n',`Правильных: ${r.correct} из ${r.total}`],['n',`Оценка: ${r.pct}%`],['n',`Время: ${mm}:${ss}`],['e',''],['h','ОТВЕТЫ:'],['e','']];r.questions.forEach((q,i)=>{const a=r.answers[i]??'—',ok=a===q.correct;lines.push(['n',`Вопрос ${i+1}: ${q.text}`],['n',`  Ответ: ${a}`],['n',`  Верный: ${q.correct}`],[ok?'ok':'err',ok?'  ВЕРНО':'  НЕВЕРНО'],['e','']);});const body=lines.map(([k,t])=>{const e=esc(t);if(k==='T')return`\\b\\fs32 ${e}\\b0\\fs24\\par`;if(k==='h')return`\\b ${e}\\b0\\par`;if(k==='ok')return`\\cf2 ${e}\\cf1\\par`;if(k==='err')return`\\cf3 ${e}\\cf1\\par`;if(k==='e')return'\\par';return`${e}\\par`;}).join('\n');const rtf=`{\\rtf1\\ansi\\deff0\n{\\fonttbl{\\f0 Arial;}}\n{\\colortbl;\\red0\\green0\\blue0;\\red0\\green128\\blue0;\\red200\\green0\\blue0;}\n\\f0\\fs24\n${body}\n}`;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rtf],{type:'application/rtf'}));a.download=`MatriX_${r.user.surname}.rtf`;a.click();URL.revokeObjectURL(a.href);showToast('Файл скачан!');}
+
+
+/* ═══════════════════════════════════════════
+   SUPERUSER CONSTANTS & STATE
+═══════════════════════════════════════════ */
+const SUPER_LOGIN = 'admin';
+const SUPER_PASS  = 'matrix2025';
+let superUser = false;
+
+// Custom tests — in-memory cache, loaded from server
+let _customTestsCache = null;
+async function loadCustomTests(){
+  if(_customTestsCache !== null) return _customTestsCache;
+  try{
+    const rows = await apiGet('/api/custom-tests');
+    _customTestsCache = rows.map(dbTestToFront);
+    return _customTestsCache;
+  }catch(e){ return []; }
+}
+function _customTestsCacheInvalidate(){ _customTestsCache = null; }
+function dbTestToFront(t){
+  return {
+    id: t.id,
+    title: t.title,
+    desc: t.desc||'',
+    difficulty: t.difficulty,
+    diffLabel: t.diff_label,
+    questions: t.questions,
+    time: t.time,
+    topics: JSON.parse(t.topics||'[]'),
+    topicKeys: JSON.parse(t.topic_keys||'[]'),
+    topicCounts: JSON.parse(t.topic_counts||'{}'),
+    custom: true,
+    _dbId: t.id
+  };
+}
+
+// Control work settings stored in localStorage
+function loadCtrlSettings(){
+  try{
+    const s = JSON.parse(localStorage.getItem('mx_ctrl_settings')||'null');
+    return s || {time:60, qcount:15, topics: null};
+  }catch(e){ return {time:60, qcount:15, topics:null}; }
+}
+function saveCtrlSettings(s){
+  try{ localStorage.setItem('mx_ctrl_settings', JSON.stringify(s)); }catch(e){}
+}
+
+/* ═══════════════════════════════════════════
+   LOGIN TAB SWITCHING
+═══════════════════════════════════════════ */
+function switchLoginTab(tab){
+  document.getElementById('tab-student').classList.toggle('active', tab==='student');
+  document.getElementById('tab-super').classList.toggle('active', tab==='super');
+  document.getElementById('lpanel-student').classList.toggle('active', tab==='student');
+  document.getElementById('lpanel-super').classList.toggle('active', tab==='super');
+}
+
+/* ═══════════════════════════════════════════
+   SUPER LOGIN / LOGOUT
+═══════════════════════════════════════════ */
+function doSuperLogin(){
+  const login = document.getElementById('inp-super-login').value.trim();
+  const pass  = document.getElementById('inp-super-pass').value;
+  if(login !== SUPER_LOGIN || pass !== SUPER_PASS){
+    showToast('Неверный логин или пароль');
+    document.getElementById('inp-super-pass').value='';
+    return;
+  }
+  superUser = true;
+  document.getElementById('inp-super-pass').value='';
+  document.getElementById('inp-super-login').value='';
+  showScreen('super');
+  superPage('tests');
+}
+function doSuperLogout(){
+  superUser = false;
+  showScreen('login');
+  switchLoginTab('student');
+}
+
+/* ═══════════════════════════════════════════
+   SUPER NAVIGATION
+═══════════════════════════════════════════ */
+let superPanelOpen = true;
+let currentSuperPage = 'tests';
+function toggleSuperPanel(){
+  superPanelOpen = !superPanelOpen;
+  document.getElementById('super-panel-wrapper').classList.toggle('closed', !superPanelOpen);
+}
+
+function superPage(name){
+  currentSuperPage = name;
+  document.querySelectorAll('#screen-super .page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('spage-'+name).classList.add('active');
+  document.querySelectorAll('#screen-super .panel-btn').forEach(b=>b.classList.remove('active'));
+  const nb = document.getElementById('spb-'+name);
+  if(nb) nb.classList.add('active');
+  if(name==='tests'){ buildSuperViewTestList(); }
+  if(name==='typed'){ buildSuperTypedGrid(); }
+  if(name==='control'){ _customCtrlsCacheInvalidate(); buildSuperCtrlList(); }
+  if(name==='manage'){ buildSuperTestsList(); }
+  // ctrlset merged into control page
+}
+
+async function buildSuperViewTestList(){
+  const custom = await loadCustomTests();
+  const all = [...TESTS, ...custom];
+  const bc={easy:'badge-easy',medium:'badge-medium',hard:'badge-hard'};
+  document.getElementById('super-test-list-container').innerHTML = all.map(t=>`
+    <div class="test-card">
+      <div class="test-card-title">${escHtml(t.title)}${t.custom?'<span class="badge badge-custom" style="font-size:10px;padding:2px 8px;margin-left:8px;vertical-align:middle;">Свой</span>':''}</div>
+      <div class="test-card-desc">${escHtml(t.desc||'')}</div>
+      <div class="test-card-meta"><span class="badge ${bc[t.difficulty]||'badge-easy'}">${escHtml(t.diffLabel||'')}</span><span class="meta-item">🏆 ${t.questions} вопросов</span><span class="meta-item">🕐 ${t.time} мин</span></div>
+      <button class="btn-start" onclick="superOpenTestInfo(${t.id})">▶ Пройти тест</button>
+    </div>`).join('');
+}
+
+let superSelectedOp = null, superSelectedQty = 5;
+function buildSuperTypedGrid(){
+  document.getElementById('super-typed-grid').innerHTML = TYPED_OPS.map(op=>`
+    <div class="typed-card" id="stc-${op.key}" onclick="selectSuperOp('${op.key}')">
+      <div class="typed-card-icon">${op.icon}</div>
+      <div class="typed-card-title">${op.title}</div>
+      <div class="typed-card-desc">${op.desc}</div>
+    </div>`).join('');
+  document.getElementById('super-qty-box').style.display='none';
+  document.getElementById('super-btn-start-typed').style.display='none';
+}
+function selectSuperOp(key){
+  superSelectedOp=key;
+  document.querySelectorAll('#super-typed-grid .typed-card').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('stc-'+key).classList.add('sel');
+  document.getElementById('super-qty-box').style.display='';
+  document.getElementById('super-btn-start-typed').style.display='';
+}
+function selectSuperQty(n){
+  superSelectedQty=n;
+  document.querySelectorAll('#super-qty-box .qty-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('sqty-'+n).classList.add('sel');
+}
+function startSuperTypedTest(){
+  if(!superSelectedOp){showToast('Выберите операцию!');return;}
+  const op=TYPED_OPS.find(o=>o.key===superSelectedOp);
+  currentMode='typed'; selectedOperation=superSelectedOp; selectedQty=superSelectedQty;
+  currentTestDef={id:200+TYPED_OPS.indexOf(op),title:'Типовые: '+op.title,desc:op.desc,diffLabel:'Типовые',questions:superSelectedQty,time:45,topics:[]};
+  openInfo();
+}
+
+function buildSuperCtrlPreview(){
+  const s = loadCtrlSettings();
+  const topics = s.topics || (GRADE_TOPICS[11]);
+  const names = topics.map(k=>{const ti=ALL_TOPIC_INFO.find(x=>x.key===k);return ti?ti.icon+' '+ti.title:k;});
+  document.getElementById('super-ctrl-preview-card').innerHTML=`
+    <div class="test-card-title">Итоговая контрольная работа</div>
+    <div class="test-card-desc">Параметры, настроенные администратором</div>
+    <div class="test-card-meta">
+      <span class="badge badge-ctrl">Контрольная</span>
+      <span class="meta-item">📝 ${s.qcount||15} вопросов</span>
+      <span class="meta-item">🕐 ${s.time||60} минут</span>
+      <span class="meta-item">⭐ Оценка 2–5</span>
+    </div>
+    <div style="background:var(--g100);border:2px solid var(--g200);border-radius:var(--r);padding:12px 16px;font-size:13px;line-height:1.9;margin-bottom:4px;">
+      <b>Темы:</b> ${escHtml(names.join(' · '))}
+    </div>`;
+}
+
+/* ═══════════════════════════════════════════
+   ALL TOPICS INFO (for chips)
+═══════════════════════════════════════════ */
+const ALL_TOPIC_INFO = [
+  {key:'add',       icon:'➕', title:'Сложение матриц'},
+  {key:'scalar',    icon:'🔣', title:'Умножение на скаляр'},
+  {key:'multiply',  icon:'✖️',  title:'Умножение матриц'},
+  {key:'transpose', icon:'↗️',  title:'Транспонирование'},
+  {key:'size',      icon:'📏', title:'Размер матрицы'},
+  {key:'det2',      icon:'🔢', title:'Определитель 2×2'},
+  {key:'det3',      icon:'🔢', title:'Определитель 3×3'},
+  {key:'matpow',    icon:'⬆️', title:'Степень матрицы'},
+  {key:'inverse',   icon:'🔄', title:'Обратная матрица'},
+  {key:'rank',      icon:'📐', title:'Ранг матрицы'},
+  {key:'sle',       icon:'⚖️',  title:'Системы уравнений'},
+  {key:'minor',     icon:'🔍', title:'Минор и дополнение'},
+];
+
+/* ═══════════════════════════════════════════
+   SUPER TESTS LIST
+═══════════════════════════════════════════ */
+async function buildSuperTestsList(){
+  const container = document.getElementById('super-tests-list');
+  const custom = await loadCustomTests();
+  const diff={easy:'Лёгкий',medium:'Средний',hard:'Сложный'};
+  const diffC={easy:'badge-easy',medium:'badge-medium',hard:'badge-hard'};
+
+  let html = '';
+
+  // Built-in tests
+  html += '<div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g400);margin-bottom:10px;">Встроенные тесты</div>';
+  html += TESTS.map(t => `
+    <div class="stest-card">
+      <div class="stest-card-left">
+        <div class="stest-card-title">${escHtml(t.title)} <span class="badge ${diffC[t.difficulty]||'badge-easy'}" style="font-size:10px;padding:2px 8px;">${diff[t.difficulty]||''}</span></div>
+        <div class="stest-card-meta">${escHtml(t.desc)} · ${t.questions} вопросов · ${t.time} мин</div>
+      </div>
+      <div class="stest-card-right"><span style="font-size:12px;color:var(--g400)">Встроенный</span></div>
+    </div>`).join('');
+
+  // Custom tests
+  if(custom.length){
+    html += '<div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g400);margin:20px 0 10px;">Ваши тесты</div>';
+    html += custom.map((t,i) => `
+      <div class="stest-card custom">
+        <div class="stest-card-left">
+          <div class="stest-card-title">${escHtml(t.title)} <span class="badge badge-custom" style="font-size:10px;padding:2px 8px;">Свой</span></div>
+          <div class="stest-card-meta">${escHtml(t.desc||'')} · ${t.questions} вопр. · ${t.time} мин · Темы: ${(t.topicKeys||[]).map(k=>{const ti=ALL_TOPIC_INFO.find(x=>x.key===k);return ti?ti.icon+' '+ti.title:k;}).join(', ')}</div>
+        </div>
+        <div class="stest-card-right">
+          <button class="btn-edit" onclick="openTestEditor(${i})">✏️ Изменить</button>
+          <button class="btn-del"  onclick="deleteCustomTest(${i})">🗑 Удалить</button>
+        </div>
+      </div>`).join('');
+  } else {
+    html += '<div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g400);margin:20px 0 10px;">Ваши тесты</div>';
+    html += '<div class="super-empty">Вы ещё не создали ни одного теста 📝<br><span style="font-size:13px">Нажмите «Создать новый тест» выше</span></div>';
+  }
+
+  container.innerHTML = html;
+}
+
+async function deleteCustomTest(idx){
+  const arr = await loadCustomTests();
+  if(!confirm('Удалить тест «'+arr[idx].title+'»?')) return;
+  const dbId = arr[idx]._dbId || arr[idx].id;
+  try{
+    await apiDelete('/api/custom-tests/'+dbId);
+    _customTestsCacheInvalidate();
+    await buildSuperTestsList();
+    if(user) await buildAllTestsList();
+    showToast('Тест удалён');
+  }catch(e){ showToast('Ошибка: '+e.message); }
+}
+
+/* ═══════════════════════════════════════════
+   TEST EDITOR MODAL
+═══════════════════════════════════════════ */
+let editorTopicCounts = {}; // key -> count
+let editingTestIdx = null;  // null = new, number = editing
+
+async function openTestEditor(idx){
+  editingTestIdx = idx;
+  const custom = await loadCustomTests();
+  const t = idx !== null ? custom[idx] : null;
+
+  document.getElementById('editor-modal-title').textContent = t ? 'Редактировать тест' : 'Новый тест';
+  document.getElementById('ed-title').value   = t ? t.title   : '';
+  document.getElementById('ed-desc').value    = t ? (t.desc||'') : '';
+  document.getElementById('ed-diff').value    = t ? t.difficulty : 'medium';
+  document.getElementById('ed-time').value    = t ? t.time    : 15;
+  document.getElementById('ed-qcount').value  = t ? t.questions : 5;
+
+  editorTopicCounts = {};
+  if(t && t.topicCounts) {
+    editorTopicCounts = {...t.topicCounts};
+  }
+
+  buildEditorTopicsGrid();
+  updateEditorPreview();
+  document.getElementById('test-editor-modal').classList.add('open');
+}
+
+function closeTestEditor(){
+  document.getElementById('test-editor-modal').classList.remove('open');
+}
+
+function buildEditorTopicsGrid(){
+  const grid = document.getElementById('ed-topics-grid');
+  grid.innerHTML = ALL_TOPIC_INFO.map(ti => {
+    const cnt = editorTopicCounts[ti.key]||0;
+    const sel = cnt > 0;
+    return `<div class="topic-chip ${sel?'sel':''}" id="edchip-${ti.key}" onclick="cycleTopicCount('${ti.key}')">
+      <span class="topic-chip-icon">${ti.icon}</span>
+      <span>${ti.title}</span>
+      <span class="topic-count-badge">${cnt||'+'}</span>
+    </div>`;
+  }).join('');
+}
+
+function cycleTopicCount(key){
+  const max = 8;
+  const cur = editorTopicCounts[key]||0;
+  const next = cur >= max ? 0 : cur + 1;
+  if(next === 0) delete editorTopicCounts[key];
+  else editorTopicCounts[key] = next;
+
+  // update chip
+  const chip = document.getElementById('edchip-'+key);
+  if(chip){
+    chip.classList.toggle('sel', next > 0);
+    chip.querySelector('.topic-count-badge').textContent = next > 0 ? next : '+';
+  }
+  updateEditorPreview();
+  // auto-update total question count
+  const total = Object.values(editorTopicCounts).reduce((a,b)=>a+b,0);
+  if(total > 0) document.getElementById('ed-qcount').value = total;
+}
+
+function updateEditorPreview(){
+  const total = Object.values(editorTopicCounts).reduce((a,b)=>a+b,0);
+  const preview = document.getElementById('ed-preview');
+  if(!total){ preview.textContent='Выберите темы выше — отметьте количество вопросов по каждой теме'; return; }
+  const parts = Object.entries(editorTopicCounts).map(([k,c])=>{
+    const ti = ALL_TOPIC_INFO.find(x=>x.key===k);
+    return ti ? ti.icon+' '+ti.title+': '+c+' вопр.' : k+': '+c;
+  });
+  preview.innerHTML = '<b>Состав теста ('+total+' вопросов):</b><br>' + parts.join(' &nbsp;·&nbsp; ');
+}
+
+async function saveTest(){
+  const title = document.getElementById('ed-title').value.trim();
+  const desc  = document.getElementById('ed-desc').value.trim();
+  const diff  = document.getElementById('ed-diff').value;
+  const time  = parseInt(document.getElementById('ed-time').value)||15;
+
+  if(!title){ showToast('Введите название теста!'); return; }
+  const total = Object.values(editorTopicCounts).reduce((a,b)=>a+b,0);
+  if(!total){ showToast('Выберите хотя бы одну тему!'); return; }
+
+  const topicKeys = Object.keys(editorTopicCounts);
+  const topics = [];
+  for(const [k,c] of Object.entries(editorTopicCounts))
+    for(let i=0;i<c;i++) topics.push(k);
+
+  const diffLabel = {easy:'Лёгкий',medium:'Средний',hard:'Сложный'}[diff]||'Средний';
+  const payload = {
+    title, desc, difficulty: diff, diff_label: diffLabel,
+    questions: total, time,
+    topics: JSON.stringify(topics),
+    topic_keys: JSON.stringify(topicKeys),
+    topic_counts: JSON.stringify(editorTopicCounts)
+  };
+
+  try{
+    const arr = await loadCustomTests();
+    if(editingTestIdx !== null){
+      const dbId = arr[editingTestIdx]._dbId || arr[editingTestIdx].id;
+      await apiPut('/api/custom-tests/'+dbId, payload);
+    } else {
+      await apiPost('/api/custom-tests', payload);
+    }
+    _customTestsCacheInvalidate();
+    closeTestEditor();
+    await buildSuperTestsList();
+    await buildSuperViewTestList();
+    if(user) await buildAllTestsList();
+    showToast(editingTestIdx!==null ? 'Тест обновлён ✓' : 'Тест создан ✓');
+  }catch(e){ showToast('Ошибка: '+e.message); }
+}
+
+/* ═══════════════════════════════════════════
+   CONTROL WORK SETTINGS
+═══════════════════════════════════════════ */
+let ctrlTopicSel = {}; // key -> bool
+
+function buildCtrlTopicsGrid(){
+  const settings = loadCtrlSettings();
+  // init selection from saved topics or all available
+  ctrlTopicSel = {};
+  const saved = settings.topics;
+  ALL_TOPIC_INFO.forEach(ti => {
+    ctrlTopicSel[ti.key] = saved ? saved.includes(ti.key) : true;
+  });
+
+  document.getElementById('ctrl-time').value   = settings.time  || 60;
+  document.getElementById('ctrl-qcount').value = settings.qcount|| 15;
+
+  const grid = document.getElementById('ctrl-topics-grid');
+  grid.innerHTML = ALL_TOPIC_INFO.map(ti => `
+    <div class="topic-chip ${ctrlTopicSel[ti.key]?'sel':''}" id="ctrlchip-${ti.key}" onclick="toggleCtrlTopic('${ti.key}')">
+      <span class="topic-chip-icon">${ti.icon}</span>
+      <span>${ti.title}</span>
+    </div>`).join('');
+}
+
+function toggleCtrlTopic(key){
+  ctrlTopicSel[key] = !ctrlTopicSel[key];
+  const chip = document.getElementById('ctrlchip-'+key);
+  if(chip) chip.classList.toggle('sel', ctrlTopicSel[key]);
+  loadCtrlPreview();
+}
+
+function loadCtrlPreview(){
+  const sel = Object.entries(ctrlTopicSel).filter(([,v])=>v).map(([k])=>k);
+  const q = parseInt(document.getElementById('ctrl-qcount').value)||15;
+  const t = parseInt(document.getElementById('ctrl-time').value)||60;
+  const prev = document.getElementById('ctrl-preview');
+  if(!sel.length){ prev.textContent='Выберите хотя бы одну тему'; return; }
+  const names = sel.map(k=>{const ti=ALL_TOPIC_INFO.find(x=>x.key===k);return ti?ti.icon+' '+ti.title:k;});
+  prev.innerHTML = '<b>Параметры контрольной:</b> '+q+' вопросов, '+t+' минут<br>Темы: '+names.join(' · ');
+}
+
+function saveControlSettings(){
+  const sel = Object.entries(ctrlTopicSel).filter(([,v])=>v).map(([k])=>k);
+  if(!sel.length){ showToast('Выберите хотя бы одну тему!'); return; }
+  const q = parseInt(document.getElementById('ctrl-qcount').value)||15;
+  const t = parseInt(document.getElementById('ctrl-time').value)||60;
+  saveCtrlSettings({time:t, qcount:q, topics:sel});
+  showToast('Настройки контрольной сохранены ✓');
+}
+
+function resetControlSettings(){
+  saveCtrlSettings({time:60, qcount:15, topics:null});
+  buildCtrlTopicsGrid();
+  loadCtrlPreview();
+  showToast('Настройки сброшены к умолчанию');
+}
+
+/* ═══════════════════════════════════════════
+   PATCH: buildTestList — include custom tests
+═══════════════════════════════════════════ */
+async function buildAllTestsList(){
+  const custom = await loadCustomTests();
+  const all = [...TESTS, ...custom];
+  const bc={easy:'badge-easy',medium:'badge-medium',hard:'badge-hard'};
+  document.getElementById('test-list-container').innerHTML=all.map(t=>`
+    <div class="test-card">
+      <div class="test-card-title">${escHtml(t.title)}</div>
+      <div class="test-card-desc">${escHtml(t.desc||'')}</div>
+      <div class="test-card-meta"><span class="badge ${bc[t.difficulty]||'badge-easy'}">${escHtml(t.diffLabel||'')}</span><span class="meta-item">🏆 ${t.questions} вопросов</span><span class="meta-item">🕐 ${t.time} мин</span></div>
+      <button class="btn-start" onclick="openTestInfo(${t.id})">Начать тест</button>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════
+   PATCH: startControlWork — use saved settings
+═══════════════════════════════════════════ */
+
+async function startCustomCtrlWork(idx){
+  const arr = await loadCustomCtrls();
+  const c = arr[idx];
+  if(!c){ showToast('Контрольная не найдена'); return; }
+  currentMode = 'control';
+  currentTestDef = {
+    id: c.id,
+    title: c.title,
+    desc: c.desc||'',
+    diffLabel: 'Контрольная',
+    questions: c.qcount,
+    time: c.time,
+    topics: shuf([...c.topics])
+  };
+  openInfo();
+}
+
+function startControlWorkPatched(){
+  const settings = loadCtrlSettings();
+  const qcount = settings.qcount || 15;
+  const time   = settings.time   || 60;
+  const savedTopics = settings.topics;
+
+  const avail = savedTopics || (GRADE_TOPICS[userGrade()]||GRADE_TOPICS[9]);
+  const pool = shuf([...avail,...avail,...avail]);
+  const total = Math.min(qcount, pool.length * 3);
+
+  currentMode='control';
+  currentTestDef={id:999,title:'Контрольная работа',desc:'Проверка знаний по всем операциям',diffLabel:'Контрольная',questions:total,time,topics:shuf(pool).slice(0,total)};
+  openInfo();
+}
+
+/* ═══════════════════════════════════════════
+   SUPER: test launch helpers
+═══════════════════════════════════════════ */
+async function superOpenTestInfo(id){
+  currentMode='test';
+  const custom=await loadCustomTests();
+  const all=[...TESTS,...custom];
+  currentTestDef=all.find(t=>t.id===id);
+  openInfo(); // sets launchScreen='super'
+}
+
+function startSuperControlWork(){
+  const settings = loadCtrlSettings();
+  const qcount = settings.qcount || 15;
+  const time   = settings.time   || 60;
+  const savedTopics = settings.topics;
+  const avail = savedTopics || Object.keys(CG);
+  const pool = shuf([...avail,...avail,...avail]);
+  const total = Math.min(qcount, pool.length * 3);
+  currentMode='control';
+  currentTestDef={id:999,title:'Контрольная работа',desc:'Проверка знаний по всем операциям',diffLabel:'Контрольная',questions:total,time,topics:shuf(pool).slice(0,total)};
+  openInfo(); // sets launchScreen='super'
+}
+
+function returnFromResult(){
+  if(launchScreen==='super'){
+    showScreen('super');
+    superPage(currentSuperPage||'tests');
+  } else {
+    showScreen('main');
+  }
+}
+
+/* finishTest patch for admin: skip API save */
+async function finishTest(timeout){
+  clearInterval(timerInterval);
+  const elapsed=Math.floor((Date.now()-testStartTime)/1000);
+  let correct=0;currentQuestions.forEach((q,i)=>{if(currentAnswers[i]===q.correct)correct++;});
+  const tot=currentQuestions.length,pct=Math.round(correct/tot*100);
+  const mm=String(Math.floor(elapsed/60)).padStart(2,'0'),ss=String(elapsed%60).padStart(2,'0');
+  document.getElementById('res-test-name').textContent=currentTestDef.title;
+  document.getElementById('res-percent').textContent=pct+'%';
+  document.getElementById('res-correct').textContent=`Правильных: ${correct} из ${tot}`;
+  document.getElementById('res-time').textContent=`Затрачено: ${mm}:${ss}`;
+  const gEl=document.getElementById('res-grade');
+  if(currentMode==='control'){const g=grade(pct);gEl.style.display='';gEl.textContent=`Оценка: ${g}`;gEl.style.color=GCOL[g];document.getElementById('res-icon').textContent=GEMO[g];}
+  else{gEl.style.display='none';document.getElementById('res-icon').textContent='✅';}
+  let comment=pct>=90?'Отличный результат! 🎉':pct>=70?'Хороший результат! 👍':pct>=50?'Неплохо, есть куда расти 📚':'Нужно повторить материал 📖';
+  if(timeout)comment='Время вышло! '+comment;
+  document.getElementById('res-comment').textContent=comment;
+  const wb=document.getElementById('btn-word');
+  showScreen('result');
+
+  if(superUser){
+    // Admin: skip API, just show result without saving
+    wb.style.display='none';
+    return;
+  }
+  wb.style.display='';
+  wb.disabled=true;wb.innerHTML='<span class="spinner spinner-dark"></span> Сохранение...';
+  const detailed=currentQuestions.map((q,i)=>({question:q.text,user_answer:currentAnswers[i]??'(не отвечено)',correct_answer:q.correct,is_correct:currentAnswers[i]===q.correct}));
+  try{const saved=await apiPost('/api/tests/results',{user_id:user.id,test_id:currentTestDef.id,test_title:currentTestDef.title,total_questions:tot,correct_answers:correct,percentage:pct,time_spent:elapsed,detailed_results:JSON.stringify(detailed)});lastResultId=saved.id;wb.disabled=false;wb.innerHTML='📄 Результаты в Word';}
+  catch(e){showToast('Результат не сохранён');wb.disabled=false;wb.innerHTML='📄 Результаты в Word';window._localResult={user,test:currentTestDef,mode:currentMode,questions:currentQuestions,answers:{...currentAnswers},correct,total:tot,pct,elapsed,date:new Date().toLocaleString('ru-RU')};}
+}
+
+
+/* ═══════════════════════════════════════════
+   CUSTOM CTRL WORKS — storage helpers
+═══════════════════════════════════════════ */
+let _customCtrlsCache = null;
+async function loadCustomCtrls(){
+  if(_customCtrlsCache !== null) return _customCtrlsCache;
+  try{
+    const rows = await apiGet('/api/ctrl-works');
+    _customCtrlsCache = rows.map(dbCtrlToFront);
+    return _customCtrlsCache;
+  }catch(e){ return []; }
+}
+function _customCtrlsCacheInvalidate(){ _customCtrlsCache = null; }
+function dbCtrlToFront(c){
+  const d = c.created_at ? new Date(c.created_at).toLocaleDateString('ru-RU') : '—';
+  return {
+    id: c.id,
+    title: c.title,
+    desc: c.desc||'',
+    grade: c.grade||'',
+    qcount: c.qcount,
+    time: c.time,
+    topics: JSON.parse(c.topics||'[]'),
+    topicKeys: JSON.parse(c.topic_keys||'[]'),
+    topicCounts: JSON.parse(c.topic_counts||'{}'),
+    active: c.active,
+    createdAt: d,
+    _dbId: c.id
+  };
+}
+
+/* ── editor state ── */
+let ceTopicCounts = {};
+let editingCtrlIdx = null;
+
+async function openCtrlEditor(idx){
+  editingCtrlIdx = idx;
+  const arr = await loadCustomCtrls();
+  const c = idx !== null ? arr[idx] : null;
+
+  document.getElementById('ctrl-editor-title').textContent = c ? 'Редактировать контрольную' : 'Новая контрольная работа';
+  document.getElementById('ce-title').value  = c ? c.title  : '';
+  document.getElementById('ce-desc').value   = c ? (c.desc||'')  : '';
+  document.getElementById('ce-grade').value  = c ? (c.grade||'') : '';
+  document.getElementById('ce-time').value   = c ? c.time   : 45;
+  document.getElementById('ce-qcount').value = c ? c.qcount : 10;
+
+  ceTopicCounts = c && c.topicCounts ? {...c.topicCounts} : {};
+  buildCeTopicsGrid();
+  updateCePreview();
+  document.getElementById('ctrl-editor-modal').classList.add('open');
+}
+
+function closeCtrlEditor(){
+  document.getElementById('ctrl-editor-modal').classList.remove('open');
+}
+
+function buildCeTopicsGrid(){
+  const grid = document.getElementById('ce-topics-grid');
+  grid.innerHTML = ALL_TOPIC_INFO.map(ti => {
+    const cnt = ceTopicCounts[ti.key]||0;
+    return `<div class="topic-chip ${cnt>0?'sel':''}" id="cechip-${ti.key}" onclick="cycleCtrlTopicCount('${ti.key}')">
+      <span class="topic-chip-icon">${ti.icon}</span>
+      <span>${ti.title}</span>
+      <span class="topic-count-badge">${cnt||'+'}</span>
+    </div>`;
+  }).join('');
+}
+
+function cycleCtrlTopicCount(key){
+  const max = 10;
+  const cur = ceTopicCounts[key]||0;
+  const next = cur >= max ? 0 : cur + 1;
+  if(next === 0) delete ceTopicCounts[key];
+  else ceTopicCounts[key] = next;
+  const chip = document.getElementById('cechip-'+key);
+  if(chip){
+    chip.classList.toggle('sel', next > 0);
+    chip.querySelector('.topic-count-badge').textContent = next > 0 ? next : '+';
+  }
+  updateCePreview();
+  const total = Object.values(ceTopicCounts).reduce((a,b)=>a+b,0);
+  if(total > 0) document.getElementById('ce-qcount').value = total;
+}
+
+function updateCePreview(){
+  const total = Object.values(ceTopicCounts).reduce((a,b)=>a+b,0);
+  const prev = document.getElementById('ce-preview');
+  if(!total){ prev.textContent='Выберите темы выше — отметьте количество вопросов'; return; }
+  const parts = Object.entries(ceTopicCounts).map(([k,c])=>{
+    const ti = ALL_TOPIC_INFO.find(x=>x.key===k);
+    return ti ? ti.icon+' '+ti.title+': '+c+' вопр.' : k+': '+c;
+  });
+  prev.innerHTML = '<b>Состав ('+ total +' вопросов):</b> '+parts.join(' &nbsp;·&nbsp; ');
+}
+
+async function saveCtrlWork(){
+  const title  = document.getElementById('ce-title').value.trim();
+  const desc   = document.getElementById('ce-desc').value.trim();
+  const grade  = document.getElementById('ce-grade').value;
+  const time   = parseInt(document.getElementById('ce-time').value)||45;
+
+  if(!title){ showToast('Введите название контрольной!'); return; }
+  const total = Object.values(ceTopicCounts).reduce((a,b)=>a+b,0);
+  if(!total){ showToast('Выберите хотя бы одну тему!'); return; }
+
+  const topicKeys = Object.keys(ceTopicCounts);
+  const topics = [];
+  for(const [k,c] of Object.entries(ceTopicCounts))
+    for(let i=0;i<c;i++) topics.push(k);
+
+  const payload = {
+    title, desc, grade,
+    qcount: total, time,
+    topics: JSON.stringify(topics),
+    topic_keys: JSON.stringify(topicKeys),
+    topic_counts: JSON.stringify(ceTopicCounts),
+    active: true
+  };
+
+  try{
+    const arr = await loadCustomCtrls();
+    if(editingCtrlIdx !== null){
+      const dbId = arr[editingCtrlIdx]._dbId || arr[editingCtrlIdx].id;
+      await apiPut('/api/ctrl-works/'+dbId, payload);
+    } else {
+      await apiPost('/api/ctrl-works', payload);
+    }
+    _customCtrlsCacheInvalidate();
+    closeCtrlEditor();
+    await buildSuperCtrlList();
+    await buildStudentCtrlPage();
+    showToast(editingCtrlIdx!==null ? 'Контрольная обновлена ✓' : 'Контрольная создана ✓');
+  }catch(e){ showToast('Ошибка: '+e.message); }
+}
+
+async function deleteCtrlWork(idx){
+  const arr = await loadCustomCtrls();
+  if(!confirm('Удалить контрольную «'+arr[idx].title+'»?')) return;
+  const dbId = arr[idx]._dbId || arr[idx].id;
+  try{
+    await apiDelete('/api/ctrl-works/'+dbId);
+    _customCtrlsCacheInvalidate();
+    await buildSuperCtrlList();
+    await buildStudentCtrlPage();
+    showToast('Контрольная удалена');
+  }catch(e){ showToast('Ошибка: '+e.message); }
+}
+
+async function toggleCtrlActive(idx){
+  const arr = await loadCustomCtrls();
+  const dbId = arr[idx]._dbId || arr[idx].id;
+  try{
+    const updated = await apiPatch('/api/ctrl-works/'+dbId+'/toggle');
+    _customCtrlsCacheInvalidate();
+    await buildSuperCtrlList();
+    await buildStudentCtrlPage();
+    showToast(updated.active ? 'Контрольная активирована' : 'Контрольная скрыта от учеников');
+  }catch(e){ showToast('Ошибка: '+e.message); }
+}
+
+/* ── build admin list ── */
+async function buildSuperCtrlList(){
+  const arr = await loadCustomCtrls();
+  const container = document.getElementById('super-ctrl-list');
+  if(!arr.length){
+    container.innerHTML = '<div class="super-empty">Вы ещё не создали ни одной контрольной 📝<br><span style="font-size:13px">Нажмите «Создать контрольную работу» выше</span></div>';
+    return;
+  }
+  container.innerHTML = arr.map((c,i)=>{
+    const topicNames = (c.topicKeys||[]).map(k=>{const ti=ALL_TOPIC_INFO.find(x=>x.key===k);return ti?ti.icon+' '+ti.title:k;}).join(', ');
+    const gradeLabel = c.grade ? c.grade+' класс' : 'Все классы';
+    return `<div class="ctrl-work-card" style="${c.active?'':'opacity:.6;border-style:dashed'}">
+      <div class="ctrl-work-card-header">
+        <div>
+          <div class="ctrl-work-card-title">${escHtml(c.title)}</div>
+          ${c.desc?`<div class="ctrl-work-card-desc">${escHtml(c.desc)}</div>`:''}
+        </div>
+        <span class="badge ${c.active?'badge-ctrl':'badge-builtin'}" style="white-space:nowrap;flex-shrink:0">${c.active?'✅ Активна':'⏸ Скрыта'}</span>
+      </div>
+      <div class="ctrl-work-card-meta">
+        <span class="meta-item">📝 ${c.qcount} вопросов</span>
+        <span class="meta-item">🕐 ${c.time} мин</span>
+        <span class="meta-item">🎓 ${gradeLabel}</span>
+        <span class="meta-item">📅 ${c.createdAt||'—'}</span>
+      </div>
+      <div class="ctrl-work-card-topics"><b>Темы:</b> ${escHtml(topicNames||'—')}</div>
+      <div class="ctrl-work-card-actions">
+        <button class="btn-edit" onclick="openCtrlEditor(${i})">✏️ Изменить</button>
+        <button class="btn-edit" onclick="toggleCtrlActive(${i})" style="border-color:${c.active?'#fca5a5':'#86efac'};color:${c.active?'#991b1b':'#166534'}">${c.active?'⏸ Скрыть от учеников':'✅ Показать ученикам'}</button>
+        <button class="btn-del"  onclick="deleteCtrlWork(${i})">🗑 Удалить</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 </script>
+
+<!-- CTRL WORK EDITOR MODAL -->
+<div class="ctrl-modal-overlay" id="ctrl-editor-modal">
+  <div class="ctrl-modal">
+    <div class="ctrl-modal-header">
+      <div class="ctrl-modal-title" id="ctrl-editor-title">Новая контрольная работа</div>
+      <button class="modal-close" onclick="closeCtrlEditor()">✕</button>
+    </div>
+    <div class="ctrl-modal-body">
+      <div class="sfield-row">
+        <div>
+          <label class="sfield-label">Название контрольной</label>
+          <input class="sfield-input" id="ce-title" placeholder="Например: Контрольная №1 — Определители">
+        </div>
+        <div>
+          <label class="sfield-label">Класс (необязательно)</label>
+          <select class="sfield-select" id="ce-grade">
+            <option value="">Для всех классов</option>
+            <option value="9">9 класс</option>
+            <option value="10">10 класс</option>
+            <option value="11">11 класс</option>
+          </select>
+        </div>
+      </div>
+      <label class="sfield-label">Описание (необязательно)</label>
+      <input class="sfield-input" id="ce-desc" placeholder="Краткое описание, тема или указание">
+      <div class="sfield-row" style="margin-top:4px">
+        <div>
+          <label class="sfield-label">Время (минуты)</label>
+          <input class="sfield-input" id="ce-time" type="number" min="5" max="180" value="45">
+        </div>
+        <div>
+          <label class="sfield-label">Количество вопросов</label>
+          <input class="sfield-input" id="ce-qcount" type="number" min="3" max="50" value="10">
+        </div>
+      </div>
+      <label class="sfield-label" style="margin-top:18px;">📚 Темы контрольной <span style="font-weight:400;color:var(--g400)">(нажмите — выберите кол-во вопросов)</span></label>
+      <div class="topics-grid" id="ce-topics-grid" style="margin-top:8px;"></div>
+      <div class="ctrl-preview" id="ce-preview" style="margin-top:14px;">Выберите темы выше</div>
+    </div>
+    <div class="ctrl-modal-footer">
+      <button class="btn-cancel-sm" onclick="closeCtrlEditor()">Отмена</button>
+      <button class="btn-save" onclick="saveCtrlWork()">💾 Сохранить контрольную</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
